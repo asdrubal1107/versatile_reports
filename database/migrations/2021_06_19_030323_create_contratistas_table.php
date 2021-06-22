@@ -19,11 +19,11 @@ class CreateContratistasTable extends Migration
             $table->string('tipo_documento', 5);
             $table->string('nombre', 40);
             $table->string('primer_apellido', 30);
-            $table->string('segundo_apellido', 30);
-            $table->string('correo', 60);
+            $table->string('segundo_apellido', 30)->nullable();
+            $table->string('correo', 60)->nullable();
             $table->string('correo_sena', 60);
             $table->string('celular_uno', 20);
-            $table->string('celular_dos', 20);
+            $table->string('celular_dos', 20)->nullable();
             $table->string('firma', 200);
             $table->boolean('estado')->default(1);
             $table->foreignId('id_municipio')->references('id_municipio')->on('municipios')->onUpdate('cascade');

@@ -62,6 +62,14 @@ Route::post('/parametrizaciones/procesos/crear/guardar', [ProcesoController::cla
 
 //Modulo contratistas
 Route::get('/contratistas', [ContratistaControler::class, 'view_list'])->name('listar_contratistas');
+Route::get('/contratistas/ratsil', [ContratistaControler::class, 'list']);
+Route::get('/contratistas/editar/{id}', [ContratistaControler::class, 'view_edit']);
+Route::get('/contratistas/listar/municipios', [ContratistaControler::class, 'get_municipios']);
+// Route::get('/contratistas/detalles/{id}', [ContratistaControler::class, 'view_details']);
+// Route::get('/contratistas/contratos/{id}', [ContratistaControler::class, 'view_contratos']);
+Route::post('/contratistas/editar', [ContratistaControler::class, 'update'])->name('editar_contratistas');
+Route::get('/contratistas/crear', [ContratistaControler::class, 'view_create'])->name('view_crear_contratistas');
+Route::post('/contratistas/crear/guardar', [ContratistaControler::class, 'save'])->name('crear_contratistas');
 
 
 

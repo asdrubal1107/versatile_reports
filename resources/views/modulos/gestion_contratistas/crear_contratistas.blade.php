@@ -23,7 +23,7 @@
                             </li>
                             <li class="breadcrumb-item"><a href="{{ route('listar_procesos') }}">Listar procesos</a>
                             </li>
-                            <li class="breadcrumb-item active">Editar proceso
+                            <li class="breadcrumb-item active">Crear proceso
                             </li>
                         </ol>
                     </div>
@@ -36,7 +36,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Editar proceso</h4>
+                            <h4 class="card-title">Crear proceso</h4>
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
@@ -46,15 +46,14 @@
                         </div>
                         <div class="card-body">
                             <div class="card-content collapse show">
-                                <form id="form_edit_proceso" class="form" action="{{ route('editar_procesos') }}" method="POST">
+                                <form id="form_crear_proceso" class="form" action="{{ route('crear_procesos') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="id_proceso" id="id_proceso" value="{{ $proceso->id_proceso }}">
                                     <div class="row justify-content-md-center">
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
                                                     <label for="nombre">Nombre proceso</label>
-                                                    <input autocomplete="off" type="text" value="{{ $proceso->nombre }}" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
+                                                    <input type="text" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                                                     @error('nombre')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -88,7 +87,7 @@
 @section('javascript')
 <script>
     $(document).ready(function() {
-        $("#form_edit_proceso").validate({
+        $("#form_crear_proceso").validate({
             rules: {
                 nombre : {
                   required: true,

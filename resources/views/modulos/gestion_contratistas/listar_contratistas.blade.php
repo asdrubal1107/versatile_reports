@@ -51,13 +51,13 @@
                                     <table id="contratistas" style="width: 100%;" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>columna 1</th>
-                                                <th>columna 2</th>
-                                                <th>columna 3</th>
-                                                <th>columna 4</th>
-                                                <th>columna 5</th>
-                                                <th>columna 6</th>
-                                                <th>columna 7</th>
+                                                <th>Documento</th>
+                                                <th>Nombre</th>
+                                                <th>Primer apellido</th>
+                                                <th>Correo sena</th>
+                                                <th>Celular</th>
+                                                <th>Estado</th>
+                                                <th style="width: 135px;">Opciones</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -71,4 +71,48 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+
+<script>
+    $('#contratistas').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '/contratistas/ratsil',
+        columns: [
+            {data: 'documento', name: 'documento'},
+            {data: 'nombre', name: 'nombre'},
+            {data: 'primer_apellido', name: 'primer_apellido'},
+            {data: 'correo_sena', name: 'correo_sena'},
+            {data: 'celular_uno', name: 'celular_uno'},
+            {data: 'estado', name: 'estado'},
+            {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false}
+        ],
+        language : {
+            "processing": "Procesando...",
+            "zeroRecords": "No se encontraron resultados",
+            "emptyTable": "Ningún dato disponible en esta tabla",
+            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "infoThousands": ",",
+            "loadingRecords": "Cargando...",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "info": "Mostrando de _START_ a _END_ de _TOTAL_ entradas",
+            "lengthMenu": "Mostrar <select>"+
+                        "<option value='10'>10</option>"+
+                        "<option value='25'>25</option>"+
+                        "<option value='50'>50</option>"+
+                        "<option value='-1'>Todos</option>"+
+                        "</select> registros"
+        }
+    });
+</script>
+    
 @endsection
