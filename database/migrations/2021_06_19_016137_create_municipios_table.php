@@ -170,6 +170,24 @@ class CreateMunicipiosTable extends Migration
             ['nombre' => 'Malambo', 'id_departamento' => 4],
             ['nombre' => 'Puerto Colombia', 'id_departamento' => 4],
             ['nombre' => 'Soledad', 'id_departamento' => 4],
+            ['nombre' => 'Baranoa', 'id_departamento' => 4],
+            ['nombre' => 'Palmar de Valera', 'id_departamento' => 4],
+            ['nombre' => 'Polonuevo', 'id_departamento' => 4],
+            ['nombre' => 'Ponedera', 'id_departamento' => 4],
+            ['nombre' => 'Sabanagrande', 'id_departamento' => 4],
+            ['nombre' => 'Sabanalarga', 'id_departamento' => 4],
+            ['nombre' => 'Santo Tomás', 'id_departamento' => 4],
+            ['nombre' => 'Juan de Acosta', 'id_departamento' => 4],
+            ['nombre' => 'Piojó', 'id_departamento' => 4],
+            ['nombre' => 'Tubará', 'id_departamento' => 4],
+            ['nombre' => 'Usiacurí', 'id_departamento' => 4],
+            ['nombre' => 'Campo de la cruz', 'id_departamento' => 4],
+            ['nombre' => 'Candelaria', 'id_departamento' => 4],
+            ['nombre' => 'Luruaco', 'id_departamento' => 4],
+            ['nombre' => 'Manatí', 'id_departamento' => 4],
+            ['nombre' => 'Repelón', 'id_departamento' => 4],
+            ['nombre' => 'Santa Lucía', 'id_departamento' => 4],
+            ['nombre' => 'Suán', 'id_departamento' => 4]
         ]);
     }
 

@@ -24,7 +24,7 @@ class CreateContratistasTable extends Migration
             $table->string('correo_sena', 60);
             $table->string('celular_uno', 20);
             $table->string('celular_dos', 20);
-            $table->string('firma', 50);
+            $table->string('firma', 200);
             $table->boolean('estado')->default(1);
             $table->foreignId('id_municipio')->references('id_municipio')->on('municipios')->onUpdate('cascade');
             $table->timestamps();

@@ -20,7 +20,7 @@ class CreateDepartamentosTable extends Migration
             // $table->timestamps();
         });
 
-        DB::table('departamentos')->insert(
+        DB::table('departamentos')->insert([
             ['nombre' => 'Amazonas'],
             ['nombre' => 'Antioquia'],
             ['nombre' => 'Arauca'],
@@ -54,7 +54,7 @@ class CreateDepartamentosTable extends Migration
             ['nombre' => 'Valle del Cauca'],
             ['nombre' => 'Vaupés'],
             ['nombre' => 'Vichada']
-        );
+        ]);
     }
 
     /**
