@@ -23,7 +23,7 @@ Route::get('/principal', [DashboardController::class, 'view_dashboard'])->name('
 
 
 Route::get('/', function () {
-    return redirect('/parametrizaciones/centros');
+    return redirect('/contratistas');
 });
 
 //Modulo parametrizacions -- Objetos De Contrato
@@ -70,6 +70,7 @@ Route::get('/contratistas/listar/municipios', [ContratistaControler::class, 'get
 Route::post('/contratistas/editar', [ContratistaControler::class, 'update'])->name('editar_contratistas');
 Route::get('/contratistas/crear', [ContratistaControler::class, 'view_create'])->name('view_crear_contratistas');
 Route::post('/contratistas/crear/guardar', [ContratistaControler::class, 'save'])->name('crear_contratistas');
+Route::get('/contratistas/cambiar/estado/{id}/{estado}', [ContratistaControler::class, 'update_state']);
 
 
 

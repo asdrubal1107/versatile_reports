@@ -20,12 +20,11 @@
             </div>
         </div>
         <div class="content-body"> 
-            <!-- Inicio tabla hoverable -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Lista requerimientos</h4>
+                            <h4 class="card-title">Revisión de requerimientos</h4>
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
@@ -33,41 +32,76 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="card-content collapse show">
-                                @if(Session::has('success'))
-                                    <div class="alert alert-success">
-                                        {{Session::get('success')}}
-                                    </div>
-                                @endif
-                                @if ($errors->any())
-                                    <div class="alert alert-danger" role="alert">
-                                        @foreach ($errors->all() as $item)
-                                            {{$item}}
-                                        @endforeach
-                                    </div>
-                                @endif
-                                <div class="table-responsive">
-                                    <table id="requerimientos" style="width: 100%;" class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>columna 1</th>
-                                                <th>columna 2</th>
-                                                <th>columna 3</th>
-                                                <th>columna 4</th>
-                                                <th>columna 5</th>
-                                                <th>columna 6</th>
-                                                <th>columna 7</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
+                        <div class="card-content collapse show">
+                            <div class="table-responsive">
+                                <table class="table table-column">
+                                    <thead>
+                                        <tr>
+                                            <th>Requerimiento</th>
+                                            <th>Detalles</th>
+                                            <th>Fecha creación</th>
+                                            <th>Fecha finalización</th>
+                                            <th style="width: 270px;">Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Salud ocupacional</td>
+                                            <td>Buenas tardes, porfavor adjuntar copia de la salud ocupacional del mes de octube</td>
+                                            <td>25/06/2021</td>
+                                            <td>21//06/2021</td>
+                                            <td>
+                                                <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
+                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+                                            </td>   
+                                        </tr>
+                                        <tr>
+                                            <td>Salud ocupacional</td>
+                                            <td>Buenas tardes, porfavor adjuntar copia de la salud ocupacional del mes de octube</td>
+                                            <td>25/06/2021</td>
+                                            <td>21//06/2021</td>
+                                            <td>
+                                                <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
+                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+                                            </td>   
+                                        </tr>
+                                        <tr>
+                                            <td>Salud ocupacional</td>
+                                            <td>Buenas tardes, porfavor adjuntar copia de la salud ocupacional del mes de octube</td>
+                                            <td>25/06/2021</td>
+                                            <td>21//06/2021</td>
+                                            <td>
+                                                <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
+                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+                                            </td>   
+                                        </tr>
+                                        <tr>
+                                            <td>Salud ocupacional</td>
+                                            <td>Buenas tardes, porfavor adjuntar copia de la salud ocupacional del mes de octube</td>
+                                            <td>25/06/2021</td>
+                                            <td>21//06/2021</td>
+                                            <td>
+                                                <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
+                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+                                            </td>   
+                                        </tr>
+                                        <tr>
+                                            <td>Salud ocupacional</td>
+                                            <td>Buenas tardes, porfavor adjuntar copia de la salud ocupacional del mes de octube</td>
+                                            <td>25/06/2021</td>
+                                            <td>21//06/2021</td>
+                                            <td>
+                                                <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
+                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+                                            </td>   
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Fin tabla hoverable -->
         </div>
     </div>
 </div>

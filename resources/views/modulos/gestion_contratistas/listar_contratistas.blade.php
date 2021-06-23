@@ -29,6 +29,11 @@
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
+                                    <li>
+                                        <a href="{{ route('view_crear_contratistas') }}" class="btn btn-versatile_reports">
+                                            <i class="ft-plus-square"></i> Nuevo
+                                        </a>
+                                    </li>
                                     <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
                                 </ul>
                             </div>
@@ -57,7 +62,7 @@
                                                 <th>Correo sena</th>
                                                 <th>Celular</th>
                                                 <th>Estado</th>
-                                                <th style="width: 135px;">Opciones</th>
+                                                <th style="width: 150px;">Opciones</th>
                                             </tr>
                                         </thead>
                                     </table>

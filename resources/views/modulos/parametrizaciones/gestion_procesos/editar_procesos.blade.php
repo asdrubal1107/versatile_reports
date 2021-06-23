@@ -53,7 +53,7 @@
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
-                                                    <label for="nombre">Nombre proceso</label>
+                                                    <label for="nombre">Nombre proceso (*)</label>
                                                     <input autocomplete="off" type="text" value="{{ $proceso->nombre }}" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                                                     @error('nombre')
                                                         <div class="invalid-feedback">{{ $message }}</div>

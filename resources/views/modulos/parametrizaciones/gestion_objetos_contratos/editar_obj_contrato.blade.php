@@ -53,14 +53,14 @@
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
-                                                    <label for="nombre">Nombre objeto contrato</label>
+                                                    <label for="nombre">Nombre objeto contrato (*)</label>
                                                     <input type="text" value="{{ $objeto->nombre }}" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                                                     @error('nombre')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="detalle">Detalle objeto contrato</label>
+                                                    <label for="detalle">Detalle objeto contrato (*)</label>
                                                     {{-- <input type="text" value="{{ $objeto->detalle }}" class="form-control border-primary @error('detalle') is-invalid @enderror" name="detalle" id="detalle"> --}}
                                                     <textarea name="detalle" class="form-control border-primary @error('nombre') is-invalid @enderror" id="detalle" cols="30" rows="10">{{ $objeto->detalle }}</textarea>
                                                     @error('detalle')

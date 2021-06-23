@@ -1,13 +1,13 @@
 @extends('layouts.principal')
 
-{{-- @section('style')
+@section('style')
     <style>
         .error{
             color: red;
             font-style: italic;
         }
     </style>
-@endsection --}}
+@endsection
 
 @section('contenido')
 <div class="app-content content">
@@ -53,7 +53,7 @@
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
-                                                    <label for="tipo_documento">Tipo Documento</label>
+                                                    <label for="tipo_documento">Tipo Documento (*)</label>
                                                     <select name="tipo_documento" id="tipo_documento" class="form-control border-primary  @error('tipo_documento') is-invalid @enderror">
                                                         <option value="CC" {{ $contratista->tipo_documento == 'CC' ? 'selected' : '' }}>Cedula Ciudadania</option>
                                                         <option value="CE" {{ $contratista->tipo_documento == 'CE' ? 'selected' : '' }}>Cedula Extranjera</option>
@@ -63,17 +63,17 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="documento">Documento</label>
+                                                    <label for="documento">Documento (*)</label>
                                                     <input autocomplete="off" type="text" value="{{ $contratista->documento }}" class="form-control border-primary @error('documento') is-invalid @enderror" name="documento" id="documento">
                                                     @error('documento')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Lugar Expedición / Municipio</label>
+                                                    <label>Lugar Expedición / Municipio (*)</label>
                                                     <select id="id_municipio" name="id_municipio" class="form-control border-primary">
                                                         @foreach ($municipios as $item)
-                                                            <option {{ $item->id_departamento == $ }} value="{{ $dep->id_departamento }}">{{ $dep->nombre }}</option>
+                                                            <option {{ $item->id_municipio == $contratista->id_municipio ? 'selected' : ''}} value="{{ $item->id_municipio }}">{{ $item->nombre }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('id_municipio')
@@ -81,14 +81,14 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="nombre">Nombre</label>
+                                                    <label for="nombre">Nombre (*)</label>
                                                     <input autocomplete="off" type="text" value="{{ $contratista->nombre }}" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                                                     @error('nombre')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="primer_apellido">Primer Apellido</label>
+                                                    <label for="primer_apellido">Primer Apellido (*)</label>
                                                     <input autocomplete="off" type="text" value="{{ $contratista->primer_apellido }}" class="form-control border-primary @error('primer_apellido') is-invalid @enderror" name="primer_apellido" id="primer_apellido">
                                                     @error('primer_apellido')
                                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -109,14 +109,14 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="correo_sena">Correo Sena</label>
+                                                    <label for="correo_sena">Correo Sena (*)</label>
                                                     <input autocomplete="off" type="text" value="{{ $contratista->correo_sena }}" class="form-control border-primary @error('correo_sena') is-invalid @enderror" name="correo_sena" id="correo_sena">
                                                     @error('correo_sena')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="celular_uno">Celular Uno</label>
+                                                    <label for="celular_uno">Celular Uno (*)</label>
                                                     <input autocomplete="off" type="text" value="{{ $contratista->celular_uno }}" class="form-control border-primary @error('celular_uno') is-invalid @enderror" name="celular_uno" id="celular_uno">
                                                     @error('celular_uno')
                                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -130,7 +130,7 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="firma">Firma</label>
+                                                    <label for="firma">Firma (*)</label>
                                                     <input autocomplete="off" type="text" value="{{ $contratista->firma }}" class="form-control border-primary @error('firma') is-invalid @enderror" name="firma" id="firma">
                                                     @error('firma')
                                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -164,38 +164,117 @@
 
 @section('javascript')
 <script>
-    /* $(document).ready(function() {
-        $("#form_edit_contratista").validate({
-            rules: {
-                nombre : {
-                  required: true,
-                  minlength: 3,
-                  maxlength: 30
-                }
+$(document).ready(function() {
+    $("#form_edit_contratista").validate({
+        rules: {
+            documento : {
+                required: true,
+                number: true,
+                minlength: 6,
+                maxlength: 14
             },
-            messages : {
-                nombre: {
-                    required: "Nombre del centro es obligatorio",
-                    minlength: "Nombre del centro debe contener minimo 3 caracteres",
-                    maxlength: "Nombre del centro no puede superar los 30 caracteres"
-                }
+            nombre : {
+                required: true,
+                minlength: 3,
+                maxlength: 40
+            },
+            primer_apellido : {
+                required: true,
+                minlength: 3,
+                maxlength: 30
+            },
+            segundo_apellido : {
+                minlength: 3,
+                maxlength: 30
+            },
+            correo_sena : {
+                required: true,
+                email: true,
+                minlength: 6,
+                maxlength: 50
+            },
+            correo : {
+                email: true,
+                minlength: 6,
+                maxlength: 50
+            },
+            celular_uno : {
+                required: true,
+                minlength: 6,
+                maxlength: 15
+            },
+            celular_dos : {
+                minlength: 6,
+                maxlength: 15
+            },
+            id_municipio: {
+                required: true,
+            },
+            tipo_documento: {
+                required: true,
+            },
+            firma: {
+                required: true,
+                minlength: 4,
+                maxlength: 40
+                // extension: "png|jpeg|jpg"
             }
-        });
-  }); */
-
-//   $(document).ready(function(){
-//     $('#id_departamento').on('change', function(){
-//         let id_departamento = $(this).val();
-//         if($.trim(id_departamento) != null){
-//             $.get('/contratistas/listar/municipios', {id_departamento: id_departamento}, function(municipios){
-//                 $('#id_municipio').empty();
-//                 $('#id_municipio').append("<option value=''>Seleccione</option>");
-//                 $.each(municipios, function (id, nombre){
-//                     $('#id_municipio').append("<option {{ "+id+" == $contratista->id_municipio ? 'selected' : '' }} value='"+ id +"'>"+ nombre +"</option>")
-//                 })
-//             })
-//         }
-//     })
-//   });
+        },
+        messages : {
+            documento: {
+                required: "Documento es obligatorio",
+                number: "Documento debe ser numerico",
+                minlength: "Documento debe contener por lo menos 6 digitos",
+                maxlength: "Documento debe contener como maximo 14 digitos"
+            },
+            nombre: {
+                required: "Nombre del contratista es obligatorio",
+                minlength: "El nombre debe contener por lo menos 3 caracteres",
+                maxlength: "El nombre debe contener como maximo 40 caracteres"
+            },
+            primer_apellido: {
+                required: "Primer apellido del contratista es obligatorio",
+                minlength: "El apellido debe contener por lo menos 3 caracteres",
+                maxlength: "El apellido debe contener como maximo 30 caracteres"
+            },
+            segundo_apellido: {
+                minlength: "El apellido debe contener por lo menos 3 caracteres",
+                maxlength: "El apellido debe contener como maximo 30 caracteres"
+            },
+            correo_sena: {
+                required: "Correo del sena es obligatorio",
+                email: "Ejemplo de correo ejemplo@ejemplo.com",
+                minlength: "Correo del sena debe contener por lo menos 6 caracteres",
+                maxlength: "Correo del sena debe contener como maximo 50 caracteres"
+            },
+            correo: {
+                email: "Ejemplo de correo ejemplo@ejemplo.com",
+                minlength: "Correo debe contener por lo menos 6 caracteres",
+                maxlength: "Correo debe contener como maximo 50 caracteres"
+            },
+            celular_uno: {
+                required: "Celular uno es obligatorio",
+                minlength: "Celular uno debe contener por lo menos 6 caracteres",
+                maxlength: "Celular uno debe contener como maximo 15 caracteres"
+            },
+            celular_dos: {
+                minlength: "Celular dos debe contener por lo menos 6 caracteres",
+                maxlength: "Celular dos debe contener como maximo 15 caracteres"
+            },
+            id_municipio: {
+                required: "Debe seleccionar un lugar de expedición",
+            },
+            tipo_documento: {
+                required: "Debe seleccionar un tipo de documento",
+            },
+            firma: {
+                required: "La firma es obligatoria",
+                minlength: "La firma debe ser de por lo menos 6 caracteres",
+                maxlength: "La firma debe ser de por lo menos 40 caracteres"
+                // extension: "La firma debe ser un archivo png, jpg o jpeg"
+            }
+        }
+    });
+});
 </script>
 @endsection

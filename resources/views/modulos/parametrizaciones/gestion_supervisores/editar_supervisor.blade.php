@@ -53,35 +53,35 @@
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
-                                                    <label for="documento">Documento</label>
+                                                    <label for="documento">Documento (*)</label>
                                                     <input type="text" value="{{ $supervisor->documento }}" class="form-control border-primary @error('documento') is-invalid @enderror" name="documento" id="documento">
                                                     @error('documento')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="nombre">Nombre</label>
+                                                    <label for="nombre">Nombre (*)</label>
                                                     <input type="text" value="{{ $supervisor->nombre }}" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                                                     @error('nombre')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="primer_apellido">Primer apellido</label>
+                                                    <label for="primer_apellido">Primer apellido (*)</label>
                                                     <input type="text" value="{{ $supervisor->primer_apellido }}" class="form-control border-primary @error('primer_apellido') is-invalid @enderror" name="primer_apellido" id="primer_apellido">
                                                     @error('primer_apellido')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="segundo_apellido">Segundo apellido</label>
+                                                    <label for="segundo_apellido">Segundo apellido <span style="font-size: 11px">(Opcional)</span></label>
                                                     <input type="text" value="{{ $supervisor->segundo_apellido }}" class="form-control border-primary @error('segundo_apellido') is-invalid @enderror" name="segundo_apellido" id="segundo_apellido">
                                                     @error('segundo_apellido')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="cargo">Cargo</label>
+                                                    <label for="cargo">Cargo (*)</label>
                                                     <input type="text" value="{{ $supervisor->cargo }}" class="form-control border-primary @error('cargo') is-invalid @enderror" name="cargo" id="cargo">
                                                     @error('cargo')
                                                         <div class="invalid-feedback">{{ $message }}</div>
