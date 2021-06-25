@@ -46,7 +46,7 @@
                         </div>
                         <div class="card-body">
                             <div class="card-content collapse show">
-                                <form id="form_crear_contratista" class="form" action="{{ route('crear_contratistas') }}" method="POST">
+                                <form id="form_crear_contratista" enctype="multipart/form-data" class="form" action="{{ route('crear_contratistas') }}" method="POST">
                                     @csrf
                                     <div class="row justify-content-md-center">
                                         <div class="col-md-6">
@@ -105,7 +105,7 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="correo">Correo <span style="font-size: 10px;"> (Opcional)</span></label>
+                                                    <label for="correo">Correo (*)</label>
                                                     <input autocomplete="off" type="text" class="form-control border-primary @error('correo') is-invalid @enderror" name="correo" id="correo">
                                                     @error('correo')
                                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -134,7 +134,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="firma">Firma (*)</label>
-                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('firma') is-invalid @enderror" name="firma" id="firma">
+                                                    <input autocomplete="off" type="file" class="form-control border-primary @error('firma') is-invalid @enderror" name="firma" id="firma">
                                                     @error('firma')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -197,6 +197,7 @@ $(document).ready(function() {
                 maxlength: 50
             },
             correo : {
+                required: true,
                 email: true,
                 minlength: 6,
                 maxlength: 50
@@ -219,8 +220,8 @@ $(document).ready(function() {
             firma: {
                 required: true,
                 minlength: 4,
-                maxlength: 40
-                // extension: "png|jpeg|jpg"
+                maxlength: 40,
+                extension: "png|jpeg|jpg"
             }
         },
         messages : {
@@ -251,6 +252,7 @@ $(document).ready(function() {
                 maxlength: "Correo del sena debe contener como maximo 50 caracteres"
             },
             correo: {
+                required: "Correo personal es obligatorio",
                 email: "Ejemplo de correo ejemplo@ejemplo.com",
                 minlength: "Correo debe contener por lo menos 6 caracteres",
                 maxlength: "Correo debe contener como maximo 50 caracteres"
@@ -273,8 +275,8 @@ $(document).ready(function() {
             firma: {
                 required: "La firma es obligatoria",
                 minlength: "La firma debe ser de por lo menos 6 caracteres",
-                maxlength: "La firma debe ser de por lo menos 40 caracteres"
-                // extension: "La firma debe ser un archivo png, jpg o jpeg"
+                maxlength: "La firma debe ser de por lo menos 40 caracteres",
+                extension: "La firma debe ser un archivo png, jpg o jpeg"
             }
         }
     });

@@ -36,3 +36,9 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 .btn-estados{
 	padding: 8px !important;
 }
+
+.btn-gris{
+	background-color: #A8A8A8 !important; 
+	color: white !important;
+	padding: 8px !important;
+}

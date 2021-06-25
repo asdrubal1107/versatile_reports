@@ -14,10 +14,12 @@ $(".number-tab-steps").steps({
     transitionEffect: "fade",
     titleTemplate: '<span class="step">#index#</span> #title#',
     labels: {
-        finish: 'Submit'
+        previous: "Anterior",
+        next: "Siguiente",
+        finish: 'Crear contrato'
     },
     onFinished: function (event, currentIndex) {
-        alert("Form submitted.");
+        console.log(event, currentIndex)
     }
 });
 

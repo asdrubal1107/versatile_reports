@@ -52,7 +52,7 @@
                                             <td>21//06/2021</td>
                                             <td>
                                                 <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
-                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+
                                             </td>   
                                         </tr>
                                         <tr>
@@ -62,7 +62,7 @@
                                             <td>21//06/2021</td>
                                             <td>
                                                 <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
-                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+
                                             </td>   
                                         </tr>
                                         <tr>
@@ -72,7 +72,7 @@
                                             <td>21//06/2021</td>
                                             <td>
                                                 <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
-                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+
                                             </td>   
                                         </tr>
                                         <tr>
@@ -82,7 +82,7 @@
                                             <td>21//06/2021</td>
                                             <td>
                                                 <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
-                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+
                                             </td>   
                                         </tr>
                                         <tr>
@@ -92,7 +92,7 @@
                                             <td>21//06/2021</td>
                                             <td>
                                                 <a href="#" class="btn btn-success btn-estados"><i class="ft-eye"> Ver detalles</i></a>
-                                                <a href="#" class="btn btn-versatile_reports"><i class="ft-edit"> Editar </i></a>
+
                                             </td>   
                                         </tr>
                                     </tbody>
