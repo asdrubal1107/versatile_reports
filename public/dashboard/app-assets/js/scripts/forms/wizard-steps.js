@@ -14,9 +14,9 @@ $(".number-tab-steps").steps({
     transitionEffect: "fade",
     titleTemplate: '<span class="step">#index#</span> #title#',
     labels: {
-        previous: "Anterior",
-        next: "Siguiente",
-        finish: 'Crear contrato'
+        previous: "Previous",
+        next: "Next",
+        finish: 'Finish'
     },
     onFinished: function (event, currentIndex) {
         console.log(event, currentIndex)

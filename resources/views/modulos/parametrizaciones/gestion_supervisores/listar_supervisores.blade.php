@@ -1,5 +1,14 @@
 @extends('layouts.principal')
 
+@section('style')
+    <style>
+        .page-item.active .page-link {
+            color: #fff !important;
+            background-color: #E96928 !important;
+        }
+    </style>
+@endsection
+
 @section('contenido')
 <div class="app-content content">
     <div class="content-overlay"></div>

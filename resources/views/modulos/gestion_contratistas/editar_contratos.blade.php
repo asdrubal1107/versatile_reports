@@ -24,9 +24,9 @@
                             </li>
                             <li class="breadcrumb-item"><a href="{{ route('listar_contratistas') }}">Listar contratistas</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="{{ route('listar_contratos', ['id' => $contratista->id_contratista]) }}">Listar contratos</a>
+                            <li class="breadcrumb-item"><a href="{{ route('listar_contratos', ['id' => $contrato->id_contratista]) }}">Listar contratos</a>
                             </li>
-                            <li class="breadcrumb-item active">Crear contrato
+                            <li class="breadcrumb-item active">Editar contrato
                             </li>
                         </ol>
                     </div>
@@ -38,7 +38,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Crear contrato</h4>
+                            <h4 class="card-title">Editar contrato</h4>
                             @if ($errors->any())
                                 <div class="alert alert-danger" role="alert">
                                     @foreach ($errors->all() as $item)
@@ -55,10 +55,11 @@
                         </div>
                         <div class="card-body">
                             <div class="card-content collapse show">
-                                <form id="form_crear_contrato" action="{{ route('crear_contratos') }}" class="number-tab-steps wizard-circle" method="POST" >
+                                <form id="form_editar_contrato" action="{{ route('editar_contratos') }}" class="number-tab-steps wizard-circle" method="POST" >
                                     @csrf
-                                    <input type="hidden" name="id_contratista" id="id_contratista" value="{{ $contratista->id_contratista }}">
-
+                                    <input type="hidden" name="id_contrato" id="id_contrato" value="{{ $contrato->id_contrato }}">
+                                    {{-- <input type="hidden" value="{{ $contrato->numero_contrato }}" name="numero_contrato_viejo" id="numero_contrato_viejo"> --}}
+                                    <input type="hidden" value="{{ $contrato->id_contratista }}" name="id_contratista" id="id_contratista">
                                     <!-- Paso 1 -->
                                     <h6>Paso 1</h6>
                                     <fieldset>
@@ -66,7 +67,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="numero_contrato">Numero contrato: (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('numero_contrato') is-invalid @enderror" name="numero_contrato" id="numero_contrato">
+                                                    <input type="text" value="{{ $contrato->numero_contrato }}" class="form-control border-primary @error('numero_contrato') is-invalid @enderror" name="numero_contrato" id="numero_contrato">
                                                     @error('numero_contrato')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -77,7 +78,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="fecha_inicio">Fecha inicio: (*)</label>
-                                                    <input type="date" placeholder="Ejemplo: xx-xx-xxx" class="form-control border-primary @error('fecha_inicio') is-invalid @enderror" name="fecha_inicio" id="fecha_inicio">
+                                                    <input type="text" readonly value="{{ $contrato->fecha_inicio }}"  class="form-control border-primary @error('fecha_inicio') is-invalid @enderror" name="fecha_inicio" id="fecha_inicio">
                                                     @error('fecha_inicio')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -88,7 +89,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="fecha_fin">Fecha fin: (*)</label>
-                                                    <input type="date" placeholder="Ejemplo: xx-xx-xxx" class="form-control border-primary @error('fecha_fin') is-invalid @enderror" name="fecha_fin" id="fecha_fin">
+                                                    <input type="text" readonly value="{{ $contrato->fecha_fin }}" class="form-control border-primary @error('fecha_fin') is-invalid @enderror" name="fecha_fin" id="fecha_fin">
                                                     @error('fecha_fin')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -104,7 +105,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="valor_contrato">Valor del contrato: (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('valor_contrato') is-invalid @enderror" name="valor_contrato" id="valor_contrato">
+                                                    <input type="text" value="{{ $contrato->valor }}" class="form-control border-primary @error('valor_contrato') is-invalid @enderror" name="valor_contrato" id="valor_contrato">
                                                     @error('valor_contrato')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -115,27 +116,21 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="forma_pago_contrato">Forma de pago del contrato: (*)</label>
-                                                    <textarea name="forma_pago_contrato" id="forma_pago_contrato" cols="30" rows="5" class="form-control border-primary @error('forma_pago_contrato') is-invalid @enderror"></textarea>
+                                                    <textarea name="forma_pago_contrato" id="forma_pago_contrato" cols="30" rows="5" class="form-control border-primary @error('forma_pago_contrato') is-invalid @enderror">
+                                                        {{ $contrato->forma_pago }}
+                                                    </textarea>
                                                     @error('forma_pago_contrato')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
                                         </div>
-                                        
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label>Lugar contrato / Departamento / Municipio (*)</label>
-                                                    <select id="id_departamento" name="id_departamento" class="form-control border-primary">
-                                                        <option value="">Seleccione el departamento</option>
-                                                        @foreach ($departamentos as $item)
-                                                            <option value="{{ $item->id_departamento }}">{{ $item->nombre }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="dropdown-divider"></div>
-                                                    <select name="id_municipio" id="id_municipio" class="form-control border-primary @error('id_municipio') is-invalid @enderror"></select>
-                                                    @error('id_municipio')
+                                                    <label for="estado_contrato">Estado: (*)</label>
+                                                    <input type="text" readonly value="{{ $contrato->estado == 0 ? 'Contrato sin asignar' : '' }}" class="form-control border-primary">
+                                                    @error('estado_contrato')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
@@ -153,7 +148,7 @@
                                                     <select name="id_objeto" id="id_objeto" class="form-control border-primary @error('id_objeto') is-invalid @enderror">
                                                         <option value="">Seleccion un objeto de contrato</option>
                                                         @foreach ($objetos as $item)
-                                                            <option value="{{ $item->id_objeto }}">{{ $item->nombre }}</option>
+                                                            <option value="{{ $item->id_objeto}}" {{ $item->id_objeto == $contrato->id_objeto ? 'selected' : '' }}>{{ $item->nombre }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('id_objeto')
@@ -169,7 +164,7 @@
                                                     <select name="id_supervisor" id="id_supervisor" class="form-control border-primary @error('id_supervisor') is-invalid @enderror">
                                                         <option value="">Seleccione</option>
                                                         @foreach ($supervisores as $item)
-                                                            <option value="{{ $item->id_supervisor }}">{{ /* $item->documento */ $item->nombre . ' ' . $item->primer_apellido }}</option>
+                                                            <option value="{{ $item->id_supervisor }}" {{ $item->id_supervisor == $contrato->id_supervisor ? 'selected' : '' }}>{{ /* $item->documento */ $item->nombre . ' ' . $item->primer_apellido }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('id_supervisor')
@@ -185,7 +180,7 @@
                                                     <select name="id_proceso" id="id_proceso" class="form-control border-primary @error('id_proceso') is-invalid @enderror">
                                                         <option value="">Seleccione</option>
                                                         @foreach ($procesos as $item)
-                                                            <option value="{{ $item->id_proceso }}">{{ $item->nombre }}</option>
+                                                            <option {{ $item->id_proceso == $contrato->id_proceso ? 'selected' : '' }} value="{{ $item->id_proceso }}">{{ $item->nombre }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('id_proceso')
@@ -206,7 +201,7 @@
                                                     <select name="id_centro" id="id_centro" class="form-control border-primary @error('id_centro') is-invalid @enderror">
                                                         <option value="">Seleccione</option>
                                                         @foreach ($centros as $item)
-                                                            <option value="{{ $item->id_centro }}">{{ $item->nombre }}</option>
+                                                            <option {{ $item->id_centro == $contrato->id_centro ? 'selected' : '' }} value="{{ $item->id_centro }}">{{ $item->nombre }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('id_centro')
@@ -217,27 +212,18 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="table-responsive">
-                                                    <table style="width: 100%;" class="table table-bordered">
-                                                        <thead>
-                                                            <th class="align-center">CONTRATISTA: {{ $contratista->nombre . ' ' . $contratista->primer_apellido }}.</th>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <table class="table table-column">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td><strong>Nombres: </strong><td>{{ $contratista->nombre }}.</td></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td><strong>Apellidos: </strong><td>{{ $contratista->primer_apellido . ' ' . $contratista->segundo_apellido }}.</td></td>
-                                                                            </tr>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                <div class="form-group">
+                                                    <label>Lugar contrato / Municipio (*)</label>
+                                                    <div class="dropdown-divider"></div>
+                                                    <select name="id_municipio" id="id_municipio" class="form-control border-primary @error('id_municipio') is-invalid @enderror">
+                                                        <option value="">Selecione un municipio</option>
+                                                        @foreach ($municipios as $item)
+                                                            <option {{ $item->id_municipio == $contrato->id_municipio ? 'selected' : '' }} value="{{ $item->id_municipio }}">{{ $item->nombre }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('id_municipio')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -254,29 +240,13 @@
 @endsection
 
 @section('javascript')
-<script>
-$(document).ready(function(){
-    $('#id_departamento').on('change', function(){
-        let id_departamento = $(this).val();
-        if($.trim(id_departamento) != null){
-            $.get('/contratistas/contratos/obtener/municipios', {id_departamento: id_departamento}, function(municipios){
-                $('#id_municipio').empty();
-                $('#id_municipio').append("<option value=''>Seleccione el municipio</option>");
-                $.each(municipios, function (id, nombre){
-                    $('#id_municipio').append("<option value='"+ id +"'>"+ nombre +"</option>")
-                })
-            })
-        }
-    })
-  });
-</script>
 
 <script src="{{ asset('sweet_alert2/sweetalert2@11.js') }}"></script>
 <script src="{{ asset('dashboard/app-assets/vendors/js/extensions/jquery.steps.min.js') }}"></script>
 
 <script>
-    var form = $("#form_crear_contrato").show();
-    $("#form_crear_contrato").steps({
+    var form = $("#form_editar_contrato").show();
+    $("#form_editar_contrato").steps({
         headerTag: "h6",
         bodyTag: "fieldset",
         transitionEffect: "fade",
@@ -284,7 +254,7 @@ $(document).ready(function(){
         labels: {
             previous: "Anterior",
             next: "Siguiente",
-            finish: 'Crear contrato'
+            finish: 'Editar contrato'
         },
         onStepChanging: function (event, currentIndex, newIndex) {
             if (currentIndex > newIndex) {
@@ -315,12 +285,12 @@ $(document).ready(function(){
             return form.valid();
         },
         onFinished: function (event, currentIndex) {
-            $("#form_crear_contrato").submit()
+            $("#form_editar_contrato").submit()
         }
     });
 
     // Initialize validation
-    $("#form_crear_contrato").validate({
+    $("#form_editar_contrato").validate({
         ignore: 'input[type=hidden]', // ignore hidden fields
         errorClass: 'danger',
         successClass: 'success',

@@ -63,6 +63,7 @@
                                         @endforeach
                                     </div>
                                 @endif
+                                <div id="validation-message"></div>
                                 <div class="table-responsive">
                                     <table id="contratos" style="width: 100%;" class="table table-bordered table-hover">
                                         <thead>
@@ -73,11 +74,11 @@
                                                 <th>Fecha inicio</th>
                                                 <th>Fecha fin</th>
                                                 <th>Estado</th>
-                                                <th style="width: 15%;">Opciones</th>
+                                                <th style="width: 20%;">Opciones</th>
                                             </tr>
                                         </thead>
                                     </table>
-                                </div>
+                                </>
                             </div>
                         </div>
                     </div>
@@ -90,6 +91,7 @@
 @endsection
 
 @section('javascript')
+<script src="{{ asset('sweet_alert2/sweetalert2@11.js') }}"></script>
 
 <script>
     let id_contratista = {{ $contratista->id_contratista }}
@@ -130,6 +132,34 @@
                         "</select> registros"
         }
     });
+
+    // function asignar_contrato(id_contrato) {
+    // Swal.fire({
+    //     title: "¿Estas seguro de asignar el contrato?",
+    //     icon: "info",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Si, asignar!",
+    //     cancelButtonText: "Cancelar",
+    // }).then((result) => {
+    //     if (result.isConfirmed) {
+    //         $.ajaxSetup({
+    //             headers: {
+    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             }
+    //         });
+    //         $.ajax({
+    //             url: "{{ url('/contratistas/contratos/cambiar/estado/"+id_contrato+"/1') }}", //Peticion asincrona al controlador
+    //             method: "POST",
+    //             success: function (response) {
+    //                 $('.alert').show();
+    //                 $('.alert').html(response.success);
+    //             },
+    //         });
+    //     }
+    // });
+    // }
 </script>
     
 @endsection

@@ -20,7 +20,7 @@ class CreateContratosTable extends Migration
             $table->dateTime('fecha_fin');
             $table->double('valor', 13, 3);
             $table->string('forma_pago', 200);
-            $table->boolean('estado')->default(1);
+            $table->boolean('estado')->default(0);
             $table->foreignId('id_contratista')->references('id_contratista')->on('contratistas')->onUpdate('cascade');
             $table->foreignId('id_proceso')->references('id_proceso')->on('procesos')->onUpdate('cascade');
             $table->foreignId('id_objeto')->references('id_objeto')->on('objetos')->onUpdate('cascade');

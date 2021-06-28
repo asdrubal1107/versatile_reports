@@ -65,10 +65,15 @@ Route::get('/contratistas', [ContratistaControler::class, 'view_list'])->name('l
 Route::get('/contratistas/ratsil', [ContratistaControler::class, 'list']);
 Route::get('/contratistas/editar/{id}', [ContratistaControler::class, 'view_edit']);
 Route::get('/contratistas/listar/municipios', [ContratistaControler::class, 'get_municipios']);
+Route::get('/contratistas/contratos/obtener/municipios', [ContratistaControler::class, 'get_municipios_contratos']);
 Route::get('/contratistas/detalles/{id}', [ContratistaControler::class, 'view_details']);
+Route::get('/contratistas/contratos/detalles/{id}', [ContratistaControler::class, 'view_details_contratos']);
 Route::get('/contratistas/contratos/listar/{id}', [ContratistaControler::class, 'view_list_contratos'])->name('listar_contratos');
 Route::get('/contratistas/contratos/crear/{id}', [ContratistaControler::class, 'view_create_contratos'])->name('view_crear_contratos');
+Route::get('/contratistas/contratos/editar/{id}', [ContratistaControler::class, 'view_edit_contratos']);
 Route::post('/contratistas/contratos/guardar/contrato', [ContratistaControler::class, 'save_contrato'])->name('crear_contratos');
+Route::get('/contratistas/contratos/cambiar/estado/{id}/{estado}', [ContratistaControler::class, 'estado_contrato']);
+Route::post('/contratistas/contratos/actualizar', [ContratistaControler::class, 'update_contrato'])->name('editar_contratos');
 Route::get('/contratistas/contratos/ratsil/{id}', [ContratistaControler::class, 'list_contratos']);
 Route::post('/contratistas/editar', [ContratistaControler::class, 'update'])->name('editar_contratistas');
 Route::get('/contratistas/crear', [ContratistaControler::class, 'view_create'])->name('view_crear_contratistas');
