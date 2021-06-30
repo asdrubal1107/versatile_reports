@@ -53,7 +53,7 @@
                                             <div class="form-body">
                                                 <div class="form-group">
                                                     <label for="nombre">Nombre centro (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
+                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                                                     @error('nombre')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror

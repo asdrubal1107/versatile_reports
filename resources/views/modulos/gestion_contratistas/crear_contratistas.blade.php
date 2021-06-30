@@ -139,6 +139,19 @@
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div> 
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-group"><label>Informacion para acceso a la aplicación</label></div>
+                                                <div class="form-group">
+                                                    <label for="password">Contraseña (*)</label>
+                                                    <input type="text" autocomplete="off" name="password" id="password" class="form-control border-primary @error('password') is-invalid @enderror">
+                                                    @error('password')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Rol</label>
+                                                    <input type="text" readonly autocomplete="off" value="Contratista" class="form-control border-primary @error('password') is-invalid @enderror">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -222,6 +235,11 @@ $(document).ready(function() {
                 minlength: 4,
                 maxlength: 40,
                 extension: "png|jpeg|jpg"
+            },
+            password : {
+                required: true,
+                minlength: 8,
+                maxlength: 20
             }
         },
         messages : {
@@ -277,6 +295,11 @@ $(document).ready(function() {
                 minlength: "La firma debe ser de por lo menos 6 caracteres",
                 maxlength: "La firma debe ser de por lo menos 40 caracteres",
                 extension: "La firma debe ser un archivo png, jpg o jpeg"
+            },
+            password : {
+                required: "La contraseña es obligatoria",
+                minlength: "La contraseña debe tener como minimo 8 caracteres",
+                maxlength: "La contraseña debe tener como maximo 20 caracteres"
             }
         }
     });

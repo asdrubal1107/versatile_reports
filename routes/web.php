@@ -1,11 +1,17 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CentroController;
-use App\Http\Controllers\ContratistaControler;
+use App\Http\Controllers\ContratistaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ObjetoController;
 use App\Http\Controllers\ProcesoController;
+use App\Http\Controllers\RequerimimientoController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,66 +25,100 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/principal', [DashboardController::class, 'view_dashboard'])->name('dashboard');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('login');
+    });
 
+    // Rutas de autenticacion
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/', function () {
-    return redirect('/contratistas');
+    // Rutas de restablecer contraseña
+    Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
 
-//Modulo parametrizacions -- Objetos De Contrato
-Route::get('/parametrizaciones/objetos/contratos', [ObjetoController::class, 'view_list'])->name('listar_objetos_contratos');
-Route::get('/parametrizaciones/objetos/contratos/listar', [ObjetoController::class, 'list']);
-Route::get('/parametrizaciones/objetos/contratos/editar/{id}', [ObjetoController::class, 'view_edit']);
-Route::post('/parametrizaciones/objetos/contratos/editar', [ObjetoController::class, 'update'])->name('editar_objeto_contrato');
-Route::get('/parametrizaciones/objetos/contratos/crear', [ObjetoController::class, 'view_create'])->name('view_crear_objeto_contrato');
-Route::post('/parametrizaciones/objetos/contratos/crear/guardar', [ObjetoController::class, 'save'])->name('crear_objeto_contrato');
 
-//Modulo parametrizacions -- Supervisores
-Route::get('/parametrizaciones/supervisores', [SupervisorController::class, 'view_list'])->name('listar_supervisores');
-Route::get('/parametrizaciones/supervisores/listar', [SupervisorController::class, 'list']);
-Route::get('/parametrizaciones/supervisores/editar/{id}', [SupervisorController::class, 'view_edit']);
-Route::post('/parametrizaciones/supervisores/editar', [SupervisorController::class, 'update'])->name('editar_supervisores');
-Route::get('/parametrizaciones/supervisores/crear', [SupervisorController::class, 'view_create'])->name('view_crear_supervisores');
-Route::post('/parametrizaciones/supervisores/crear/guardar', [SupervisorController::class, 'save'])->name('crear_supervisores');
-Route::get('/parametrizaciones/supervisores/cambiar/estado/{id}/{estado}', [SupervisorController::class, 'update_state'])->name('cambiar_estado_supervisor');
+Route::middleware(['auth'])->group(function(){
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/principal', [DashboardController::class, 'view_dashboard'])->name('dashboard');
+    Route::post('/guardar/ajustes', [UsuarioController::class, 'ajustes_usuarios'])->name('ajustes_usuario');
+    Route::get('/ajustes/{id}', [UsuarioController::class, 'view_ajustes'])->name('view_ajustes');
+    Route::middleware(['Administrador'])->group(function(){
+        //Modulo parametrizacions -- Objetos De Contrato
+        Route::get('/parametrizaciones/objetos/contratos', [ObjetoController::class, 'view_list'])->name('listar_objetos_contratos');
+        Route::get('/parametrizaciones/objetos/contratos/listar', [ObjetoController::class, 'list']);
+        Route::get('/parametrizaciones/objetos/contratos/editar/{id}', [ObjetoController::class, 'view_edit']);
+        Route::post('/parametrizaciones/objetos/contratos/editar', [ObjetoController::class, 'update'])->name('editar_objeto_contrato');
+        Route::get('/parametrizaciones/objetos/contratos/crear', [ObjetoController::class, 'view_create'])->name('view_crear_objeto_contrato');
+        Route::post('/parametrizaciones/objetos/contratos/crear/guardar', [ObjetoController::class, 'save'])->name('crear_objeto_contrato');
+        //Modulo parametrizacions -- Supervisores
+        Route::get('/parametrizaciones/supervisores', [SupervisorController::class, 'view_list'])->name('listar_supervisores');
+        Route::get('/parametrizaciones/supervisores/listar', [SupervisorController::class, 'list']);
+        Route::get('/parametrizaciones/supervisores/editar/{id}', [SupervisorController::class, 'view_edit']);
+        Route::post('/parametrizaciones/supervisores/editar', [SupervisorController::class, 'update'])->name('editar_supervisores');
+        Route::get('/parametrizaciones/supervisores/crear', [SupervisorController::class, 'view_create'])->name('view_crear_supervisores');
+        Route::post('/parametrizaciones/supervisores/crear/guardar', [SupervisorController::class, 'save'])->name('crear_supervisores');
+        Route::get('/parametrizaciones/supervisores/cambiar/estado/{id}/{estado}', [SupervisorController::class, 'update_state'])->name('cambiar_estado_supervisor');
+        //Modulo parametrizaciones -- Centros
+        Route::get('/parametrizaciones/centros', [CentroController::class, 'view_list'])->name('listar_centros');
+        Route::get('/parametrizaciones/centros/listar', [CentroController::class, 'list']);
+        Route::get('/parametrizaciones/centros/editar/{id}', [CentroController::class, 'view_edit']);
+        Route::post('/parametrizaciones/centros/editar', [CentroController::class, 'update'])->name('editar_centros');
+        Route::get('/parametrizaciones/centros/crear', [CentroController::class, 'view_create'])->name('view_crear_centros');
+        Route::post('/parametrizaciones/centros/crear/guardar', [CentroController::class, 'save'])->name('crear_centros');
+        //Modulo parametrizaciones -- Procesos
+        Route::get('/parametrizaciones/procesos', [ProcesoController::class, 'view_list'])->name('listar_procesos');
+        Route::get('/parametrizaciones/procesos/listar', [ProcesoController::class, 'list']);
+        Route::get('/parametrizaciones/procesos/editar/{id}', [ProcesoController::class, 'view_edit']);
+        Route::post('/parametrizaciones/procesos/editar', [ProcesoController::class, 'update'])->name('editar_procesos');
+        Route::get('/parametrizaciones/procesos/crear', [ProcesoController::class, 'view_create'])->name('view_crear_procesos');
+        Route::post('/parametrizaciones/procesos/crear/guardar', [ProcesoController::class, 'save'])->name('crear_procesos');
+        //Modulo contratistas
+        Route::get('/contratistas', [ContratistaController::class, 'view_list'])->name('listar_contratistas');
+        Route::get('/contratistas/ratsil', [ContratistaController::class, 'list']);
+        Route::get('/contratistas/editar/{id}', [ContratistaController::class, 'view_edit']);
+        Route::get('/contratistas/listar/municipios', [ContratistaController::class, 'get_municipios']);
+        Route::get('/contratistas/contratos/obtener/municipios', [ContratistaController::class, 'get_municipios_contratos']);
+        Route::get('/contratistas/detalles/{id}', [ContratistaController::class, 'view_details']);
+        Route::get('/contratistas/contratos/detalles/{id}', [ContratistaController::class, 'view_details_contratos']);
+        Route::get('/contratistas/contratos/listar/{id}', [ContratistaController::class, 'view_list_contratos'])->name('listar_contratos');
+        Route::get('/contratistas/contratos/crear/{id}', [ContratistaController::class, 'view_create_contratos'])->name('view_crear_contratos');
+        Route::get('/contratistas/contratos/editar/{id}', [ContratistaController::class, 'view_edit_contratos']);
+        Route::post('/contratistas/contratos/guardar/contrato', [ContratistaController::class, 'save_contrato'])->name('crear_contratos');
+        Route::get('/contratistas/contratos/cambiar/estado/{id}/{estado}', [ContratistaController::class, 'estado_contrato']);
+        Route::post('/contratistas/contratos/actualizar', [ContratistaController::class, 'update_contrato'])->name('editar_contratos');
+        Route::get('/contratistas/contratos/ratsil/{id}', [ContratistaController::class, 'list_contratos']);
+        Route::post('/contratistas/editar', [ContratistaController::class, 'update'])->name('editar_contratistas');
+        Route::get('/contratistas/crear', [ContratistaController::class, 'view_create'])->name('view_crear_contratistas');
+        Route::post('/contratistas/crear/guardar', [ContratistaController::class, 'save'])->name('crear_contratistas');
+        Route::get('/contratistas/cambiar/estado/{id}/{estado}', [ContratistaController::class, 'update_state']);
+        //Modulo gestion de requerimientos
+        Route::get('/requerimientos', [RequerimimientoController::class, 'view_list'])->name('listar_requerimientos');
+        Route::get('/requerimientos/ratsil', [RequerimimientoController::class, 'list']);
+        Route::get('/requerimientos/crear', [RequerimimientoController::class, 'view_create'])->name('view_crear_requerimientos');
+        Route::get('/requerimientos/editar/{id}', [RequerimimientoController::class, 'view_edit']);
+        Route::post('/requerimientos/actualizar', [RequerimimientoController::class, 'update'])->name('editar_requerimientos');
+        Route::post('/requerimientos/guardar', [RequerimimientoController::class, 'save'])->name('crear_requerimientos');
+        //Modulo parametrizaciones -- roles
+        Route::get('/parametrizaciones/roles', [RolController::class, 'view_list'])->name('listar_roles');
+        Route::get('/parametrizaciones/roles/ratsil', [RolController::class, 'list']);
+        //Modulo gestion de usuarios
+        Route::get('/usuarios', [UsuarioController::class, 'view_list'])->name('listar_usuarios');
+        Route::get('/usuarios/ratsil', [UsuarioController::class, 'list']);
+    });
+    Route::middleware(['Supervisor'])->group(function(){
+              
+    });
+    Route::middleware(['Contratista'])->group(function(){
 
-//Modulo parametrizaciones -- Centros
-Route::get('/parametrizaciones/centros', [CentroController::class, 'view_list'])->name('listar_centros');
-Route::get('/parametrizaciones/centros/listar', [CentroController::class, 'list']);
-Route::get('/parametrizaciones/centros/editar/{id}', [CentroController::class, 'view_edit']);
-Route::post('/parametrizaciones/centros/editar', [CentroController::class, 'update'])->name('editar_centros');
-Route::get('/parametrizaciones/centros/crear', [CentroController::class, 'view_create'])->name('view_crear_centros');
-Route::post('/parametrizaciones/centros/crear/guardar', [CentroController::class, 'save'])->name('crear_centros');
-
-//Modulo parametrizaciones -- Procesos
-Route::get('/parametrizaciones/procesos', [ProcesoController::class, 'view_list'])->name('listar_procesos');
-Route::get('/parametrizaciones/procesos/listar', [ProcesoController::class, 'list']);
-Route::get('/parametrizaciones/procesos/editar/{id}', [ProcesoController::class, 'view_edit']);
-Route::post('/parametrizaciones/procesos/editar', [ProcesoController::class, 'update'])->name('editar_procesos');
-Route::get('/parametrizaciones/procesos/crear', [ProcesoController::class, 'view_create'])->name('view_crear_procesos');
-Route::post('/parametrizaciones/procesos/crear/guardar', [ProcesoController::class, 'save'])->name('crear_procesos');
+    });
+});
 
 
-//Modulo contratistas
-Route::get('/contratistas', [ContratistaControler::class, 'view_list'])->name('listar_contratistas');
-Route::get('/contratistas/ratsil', [ContratistaControler::class, 'list']);
-Route::get('/contratistas/editar/{id}', [ContratistaControler::class, 'view_edit']);
-Route::get('/contratistas/listar/municipios', [ContratistaControler::class, 'get_municipios']);
-Route::get('/contratistas/contratos/obtener/municipios', [ContratistaControler::class, 'get_municipios_contratos']);
-Route::get('/contratistas/detalles/{id}', [ContratistaControler::class, 'view_details']);
-Route::get('/contratistas/contratos/detalles/{id}', [ContratistaControler::class, 'view_details_contratos']);
-Route::get('/contratistas/contratos/listar/{id}', [ContratistaControler::class, 'view_list_contratos'])->name('listar_contratos');
-Route::get('/contratistas/contratos/crear/{id}', [ContratistaControler::class, 'view_create_contratos'])->name('view_crear_contratos');
-Route::get('/contratistas/contratos/editar/{id}', [ContratistaControler::class, 'view_edit_contratos']);
-Route::post('/contratistas/contratos/guardar/contrato', [ContratistaControler::class, 'save_contrato'])->name('crear_contratos');
-Route::get('/contratistas/contratos/cambiar/estado/{id}/{estado}', [ContratistaControler::class, 'estado_contrato']);
-Route::post('/contratistas/contratos/actualizar', [ContratistaControler::class, 'update_contrato'])->name('editar_contratos');
-Route::get('/contratistas/contratos/ratsil/{id}', [ContratistaControler::class, 'list_contratos']);
-Route::post('/contratistas/editar', [ContratistaControler::class, 'update'])->name('editar_contratistas');
-Route::get('/contratistas/crear', [ContratistaControler::class, 'view_create'])->name('view_crear_contratistas');
-Route::post('/contratistas/crear/guardar', [ContratistaControler::class, 'save'])->name('crear_contratistas');
-Route::get('/contratistas/cambiar/estado/{id}/{estado}', [ContratistaControler::class, 'update_state']);
 
 
 

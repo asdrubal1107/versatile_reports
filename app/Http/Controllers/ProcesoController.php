@@ -23,14 +23,17 @@ class ProcesoController extends Controller
     }
 
     public function list(){
-        $procesos = Proceso::all();
-
-        return DataTables::of($procesos)
-            ->addColumn('Opciones', function ($proceso) {
-                return '<a style="width: 70px;" href="/parametrizaciones/procesos/editar/'.$proceso->id_proceso.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i> Editar</a>';
-            })
-            ->rawColumns(['Opciones'])
-            ->make(true);
+        if(request()->ajax()){
+            $procesos = Proceso::all();
+    
+            return DataTables::of($procesos)
+                ->addColumn('Opciones', function ($proceso) {
+                    return '<a style="width: 70px;" href="/parametrizaciones/procesos/editar/'.$proceso->id_proceso.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i> Editar</a>';
+                })
+                ->rawColumns(['Opciones'])
+                ->make(true);
+        }
+        return redirect()->route('dashboard');
     }
 
     public function save(Request $request){

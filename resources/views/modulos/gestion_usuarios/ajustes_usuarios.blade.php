@@ -15,15 +15,14 @@
     <div class="content-wrapper">
         <div class="content-header row">
             <div class="content-header-left col-md-6 col-12 mb-2">
-                <h3 class="content-header-title mb-0">Gestion objetos de contrato</h3>
+                <h3 class="content-header-title mb-0">Ajustes de usuario</h3>
                 <div class="row breadcrumbs-top">
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="{{ route('listar_objetos_contratos') }}">Listar objetos de contrato</a>
                             </li>
-                            <li class="breadcrumb-item active">Crear objeto de contrato
+                            <li class="breadcrumb-item active">Ajustes de usuario
                             </li>
                         </ol>
                     </div>
@@ -36,7 +35,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Crear objeto de contrato</h4>
+                            <h4 class="card-title">Ajustes de usuario</h4>
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
@@ -46,22 +45,35 @@
                         </div>
                         <div class="card-body">
                             <div class="card-content collapse show">
-                                <form id="form_crear_objeto" class="form" action="{{ route('crear_objeto_contrato') }}" method="POST">
+                                @if(Session::has('success'))
+                                    <div class="alert alert-success">
+                                        {{Session::get('success')}}
+                                    </div>
+                                @endif
+                                @if ($errors->any())
+                                    <div class="alert alert-danger" role="alert">
+                                        @foreach ($errors->all() as $item)
+                                            {{$item}}
+                                        @endforeach
+                                    </div>
+                                @endif
+                                <form id="form_ajustes_usuarios" class="form" action="{{ route('ajustes_usuario') }}" method="POST">
                                     @csrf
+                                    <input type="hidden" name="id_usuario" id="id_usuario" value="{{ $usuario->id_usuario }}">
                                     <div class="row justify-content-md-center">
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
-                                                    <label for="nombre">Nombre objeto contrato (*)</label>
-                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
-                                                    @error('nombre')
+                                                    <label for="contraseña">Contraseña (*)</label>
+                                                    <input autocomplete="off" type="password" class="form-control border-primary @error('contraseña') is-invalid @enderror" name="contraseña" id="contraseña">
+                                                    @error('contraseña')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="detalle">Detalle objeto contrato (*)</label>
-                                                    <textarea name="detalle" class="form-control" id="detalle" cols="30" rows="10"></textarea>
-                                                    @error('detalle')
+                                                    <label for="contraseña_confirmation">Confirmar contraseña (*)</label>
+                                                    <input autocomplete="off" type="password" class="form-control border-primary @error('contraseña_confirmation') is-invalid @enderror" name="contraseña_confirmation" id="contraseña_confirmation">
+                                                    @error('contraseña_confirmation')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
@@ -70,7 +82,7 @@
                                     </div>
                                     <hr>
                                     <div class="fomr-actions text-center">
-                                        <a href="{{ route('listar_objetos_contratos') }}" class="btn btn-warning mr-1">
+                                        <a href="{{ route('dashboard') }}" class="btn btn-warning mr-1">
                                             <i class="la la-close"></i>
                                             Cancelar
                                         </a>
@@ -94,29 +106,27 @@
 @section('javascript')
 <script>
     $(document).ready(function() {
-        $("#form_crear_objeto").validate({
+        $("#form_ajustes_usuarios").validate({
             rules: {
-                nombre : {
+                contraseña : {
                   required: true,
-                  minlength: 3,
-                  maxlength: 40
+                  minlength: 8,
+                  maxlength: 20
                 },
-                detalle : {
-                  required: true,
-                  minlength: 20,
-                  maxlength: 600
-                },
+                contraseña_confirmation : {
+                    required: true,
+                    equalTo: '#contraseña'
+                }
             },
             messages : {
-                nombre: {
-                    required: "Por favor ingrese el nombre del objeto de contrato",
-                    minlength: "El nombre debe contener por lo menos 3 caracteres",
-                    maxlength: "El nombre debe contener como maximo 40 caracteres"
+                contraseña : {
+                  required: "Campo obligatorio",
+                  minlength: "La contraseña debe ser minimo de 8 caracteres",
+                  maxlength: "La contraseña debe ser maximo de 20 caracteres"
                 },
-                detalle: {
-                    required: "Por favor ingrese un detalle del objeto de contrato",
-                    minlength: "El detalle debe contener por lo menos 20 caracteres",
-                    maxlength: "El detalle debe contener como maximo 600 caracteres"
+                contraseña_confirmation : {
+                    required: "Campo obligatorio",
+                    equalTo: "Las contraseñas no coinciden"
                 }
             }
         });

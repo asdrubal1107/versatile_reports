@@ -23,7 +23,7 @@ class LoginController extends Controller
             'password' => $request->password,
             'estado' => 1
         ])) {
-            return redirect()->route('principal');
+            return redirect()->route('dashboard');
         }
 
         return back()
@@ -35,8 +35,8 @@ class LoginController extends Controller
     {
         $request->validate([
             'tipo_documento' => 'required|string',
-            'documento' => 'required|numeric|min:1000000',
-            'password' => 'required|string|min:8',
+            'documento' => 'required|string|min:8|max:20',
+            'password' => 'required|string|min:8|max:20',
         ]);
     }
 

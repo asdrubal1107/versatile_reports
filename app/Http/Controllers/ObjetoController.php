@@ -24,14 +24,17 @@ class ObjetoController extends Controller
 
 
     public function list(){
-        $objetos = Objeto::all();
-
-        return DataTables::of($objetos)
-            ->addColumn('Opciones', function ($objeto) {
-                return '<a style="width: 70px;" href="/parametrizaciones/objetos/contratos/editar/'.$objeto->id_objeto.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i> Editar</a>';
-            })
-            ->rawColumns(['Opciones'])
-            ->make(true);
+        if(request()->ajax()){
+            $objetos = Objeto::all();
+    
+            return DataTables::of($objetos)
+                ->addColumn('Opciones', function ($objeto) {
+                    return '<a style="width: 70px;" href="/parametrizaciones/objetos/contratos/editar/'.$objeto->id_objeto.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i> Editar</a>';
+                })
+                ->rawColumns(['Opciones'])
+                ->make(true);
+        }
+        return redirect()->route('dashboard');
     }
 
     public function save(Request $request){

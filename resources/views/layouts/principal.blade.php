@@ -68,17 +68,15 @@
 
     <!-- BEGIN: Main Menu-->
 
-    @include('layouts.plantilla.sidebar_administrador')
-
-    {{-- @if (Auth::check())
+    @if (Auth::check())
         @if(Auth::user()->id_rol == 1) 
             @include('layouts.plantilla.sidebar_administrador')
         @elseif(Auth::user()->id_rol == 2) 
             @include('layouts.plantilla.sidebar_contratista')
-        @else 
-            <strong>No se cargo<br>el menu de<br>navegacion</strong>
+        @elseif(Auth::user()->id_rol == 3)
+            @include('layouts.plantilla.sidebar_supervisor')
         @endif
-    @endif --}}
+    @endif
     <!-- END: Main Menu-->
 
     <!-- BEGIN: Content-->

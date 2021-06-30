@@ -16,7 +16,7 @@ class CreateRequerimientosTable extends Migration
         Schema::create('requerimientos', function (Blueprint $table) {
             $table->id('id_requerimiento');
             $table->string('nombre', 100);
-            $table->text('description');
+            $table->text('detalle');
             $table->date('fecha_creacion');
             $table->date('fecha_finalizacion');
             $table->boolean('estado')->default(1);

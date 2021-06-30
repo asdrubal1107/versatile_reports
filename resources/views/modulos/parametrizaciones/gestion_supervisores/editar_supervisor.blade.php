@@ -48,13 +48,26 @@
                             <div class="card-content collapse show">
                                 <form id="form_editar_supervisor" class="form" action="{{ route('editar_supervisores') }}" method="POST">
                                     @csrf
+                                    <input type="hidden" name="correo_anterior" id="correo_anterior" value="{{ $supervisor->correo }}">
+                                    <input type="hidden" name="documento_anterior" id="documento_anterior" value="{{ $supervisor->documento }}">
                                     <input type="hidden" name="id_supervisor" id="id_supervisor" value="{{ $supervisor->id_supervisor }}">
                                     <div class="row justify-content-md-center">
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
+                                                    <label for="tipo_documento">Tipo Documento (*)</label>
+                                                    <select name="tipo_documento" id="tipo_documento" class="form-control border-primary @error('documento') is-invalid @enderror">
+                                                        <option value="">Seleccione un tipo de documento</option>
+                                                        <option value="CC" {{ $supervisor->tipo_documento == 'CC' ? 'selected' : '' }}>Cedula Ciudadania</option>
+                                                        <option value="CE" {{ $supervisor->tipo_documento == 'CE' ? 'selected' : '' }}>Cedula Extranjera</option>
+                                                    </select>
+                                                    @error('tipo_documento')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="documento">Documento (*)</label>
-                                                    <input type="text" value="{{ $supervisor->documento }}" class="form-control border-primary @error('documento') is-invalid @enderror" name="documento" id="documento">
+                                                    <input type="text" name="documento" value="{{ $supervisor->documento }}" class="form-control border-primary @error('documento') is-invalid @enderror" id="documento">
                                                     @error('documento')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -86,6 +99,26 @@
                                                     @error('cargo')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-grup"><label>Informacion de acceso a la aplicacion</label></div>
+                                                <div class="form-group">
+                                                    <label for="correo">Correo electronico (*)</label>
+                                                    <input autocomplete="off" value="{{ $supervisor->correo }}" type="text" class="form-control border-primary @error('correo') is-invalid @enderror" name="correo" id="correo">
+                                                    @error('correo')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="password">Contraseña</label>
+                                                    <input autocomplete="off" type="text" placeholder="Contraseña" class="form-control border-primary @error('password') is-invalid @enderror" name="password" id="password">
+                                                    @error('password')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Rol: </label>
+                                                    <input class="form-control border-primary" type="text" readonly value="Supervisor">
                                                 </div>
                                             </div>
                                         </div>
@@ -143,6 +176,14 @@
                     minlength: 3,
                     maxlength: 30
                 },
+                password : {
+                    minlength: 8,
+                    maxlength: 20
+                },
+                correo : {
+                    required: true,
+                    email: true
+                }
             },
             messages : {
                 documento: {
@@ -169,6 +210,14 @@
                     required: "Cargo del supervisor es obligatorio",
                     minlength: "El cargo debe contener por lo menos 3 caracteres",
                     maxlength: "El cargo debe contener como maximo 30 caracteres"
+                },
+                password : {
+                    minlength: "La contraseña debe tener como minimo 8 caracteres",
+                    maxlength: "La contraseña debe tener como maximo 20 caracteres"
+                },
+                correo : {
+                    required: "El correo es obligatorio",
+                    email: "Ingrese un formato valido, ejemplo@ejemplo.com"
                 }
             }
         });

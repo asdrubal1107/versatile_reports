@@ -54,7 +54,7 @@
                                             <div class="form-body">
                                                 <div class="form-group">
                                                     <label for="nombre">Nombre objeto contrato (*)</label>
-                                                    <input type="text" value="{{ $objeto->nombre }}" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
+                                                    <input autocomplete="off" type="text" value="{{ $objeto->nombre }}" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                                                     @error('nombre')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror

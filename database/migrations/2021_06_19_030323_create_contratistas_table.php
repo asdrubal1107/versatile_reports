@@ -20,8 +20,8 @@ class CreateContratistasTable extends Migration
             $table->string('nombre', 40);
             $table->string('primer_apellido', 30);
             $table->string('segundo_apellido', 30)->nullable();
-            $table->string('correo', 60);
-            $table->string('correo_sena', 60);
+            $table->string('correo', 60)->unique();
+            $table->string('correo_sena', 60)->unique();
             $table->string('celular_uno', 20);
             $table->string('celular_dos', 20)->nullable();
             $table->string('firma', 200);

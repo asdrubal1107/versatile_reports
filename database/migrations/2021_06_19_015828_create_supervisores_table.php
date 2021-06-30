@@ -20,6 +20,7 @@ class CreateSupervisoresTable extends Migration
             $table->string('nombre', 40);
             $table->string('primer_apellido', 30);
             $table->string('segundo_apellido', 30)->nullable();
+            $table->string('correo', 30)->unique();
             $table->boolean('estado')->default('1');
             $table->string('cargo', 50);
             $table->timestamps();

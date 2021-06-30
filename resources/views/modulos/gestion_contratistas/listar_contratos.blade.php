@@ -68,17 +68,17 @@
                                     <table id="contratos" style="width: 100%;" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Contratista</th>
-                                                <th>Nombre contratista</th>
-                                                <th>Numero contrato</th>
-                                                <th>Fecha inicio</th>
-                                                <th>Fecha fin</th>
-                                                <th>Estado</th>
-                                                <th style="width: 20%;">Opciones</th>
+                                                <th style="width: 5%;">Contratista</th>
+                                                <th style="width: 15%;">Nombre contratista</th>
+                                                <th style="width: 15%;">Numero contrato</th>
+                                                <th style="width: 20%;">Fecha inicio</th>
+                                                <th style="width: 20%;">Fecha fin</th>
+                                                <th style="width: 10%;">Estado</th>
+                                                <th style="width: 25%;">Opciones</th>
                                             </tr>
                                         </thead>
                                     </table>
-                                </>
+                                </div>
                             </div>
                         </div>
                     </div>

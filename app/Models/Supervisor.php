@@ -13,9 +13,11 @@ class Supervisor extends Model
     protected $primaryKey = "id_supervisor";
     protected $fillable = [
         'documento',
+        'tipo_documento',
         'nombre',
         'primer_apellido',
         'segundo_apellido',
+        'correo',
         'estado',
         'cargo'
     ];

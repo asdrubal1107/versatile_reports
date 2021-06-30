@@ -52,39 +52,70 @@
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
+                                                    <label for="tipo_documento">Tipo Documento (*)</label>
+                                                    <select name="tipo_documento" id="tipo_documento" class="form-control border-primary @error('documento') is-invalid @enderror">
+                                                        <option value="">Seleccione un tipo de documento</option>
+                                                        <option value="CC">Cedula Ciudadania</option>
+                                                        <option value="CE">Cedula Extranjera</option>
+                                                    </select>
+                                                    @error('tipo_documento')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="documento">Documento (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('documento') is-invalid @enderror" name="documento" id="documento">
+                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('documento') is-invalid @enderror" name="documento" id="documento">
                                                     @error('documento')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="nombre">Nombre (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
+                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
                                                     @error('nombre')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="primer_apellido">Primer apellido (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('primer_apellido') is-invalid @enderror" name="primer_apellido" id="primer_apellido">
+                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('primer_apellido') is-invalid @enderror" name="primer_apellido" id="primer_apellido">
                                                     @error('primer_apellido')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="segundo_apellido">Segundo apellido <span style="font-size: 11px">(Opcional)</span></label>
-                                                    <input type="text" class="form-control border-primary @error('segundo_apellido') is-invalid @enderror" name="segundo_apellido" id="segundo_apellido">
+                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('segundo_apellido') is-invalid @enderror" name="segundo_apellido" id="segundo_apellido">
                                                     @error('segundo_apellido')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="cargo">Cargo (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('cargo') is-invalid @enderror" name="cargo" id="cargo">
+                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('cargo') is-invalid @enderror" name="cargo" id="cargo">
                                                     @error('cargo')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-grup"><label>Informacion de acceso a la aplicacion</label></div>
+                                                <div class="form-group">
+                                                    <label for="correo">Correo electronico (*)</label>
+                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('correo') is-invalid @enderror" name="correo" id="correo">
+                                                    @error('correo')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="password">Contraseña (*)</label>
+                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('password') is-invalid @enderror" name="password" id="password">
+                                                    @error('password')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Rol: </label>
+                                                    <input class="form-control border-primary" type="text" readonly value="Supervisor">
                                                 </div>
                                             </div>
                                         </div>
@@ -117,6 +148,9 @@
     $(document).ready(function() {
         $("#form_crear_supervisor").validate({
             rules: {
+                tipo_documento : {
+                    required: true
+                },
                 documento : {
                     required: true,
                     number: true,
@@ -142,8 +176,20 @@
                     minlength: 3,
                     maxlength: 30
                 },
+                password : {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20
+                },
+                correo : {
+                    required: true,
+                    email: true
+                }
             },
             messages : {
+                tipo_documento : {
+                    required: "Seleccione un tipo de documento"
+                },
                 documento: {
                     required: "Documento es obligatorio",
                     number: "Documento debe ser numerico",
@@ -168,6 +214,15 @@
                     required: "Cargo del supervisor es obligatorio",
                     minlength: "El cargo debe contener por lo menos 3 caracteres",
                     maxlength: "El cargo debe contener como maximo 30 caracteres"
+                },
+                password : {
+                    required: "La contraseña es obligatoria",
+                    minlength: "La contraseña debe tener como minimo 8 caracteres",
+                    maxlength: "La contraseña debe tener como maximo 20 caracteres"
+                },
+                correo : {
+                    required: "El correo es obligatorio",
+                    email: "Ingrese un formato valido, ejemplo@ejemplo.com"
                 }
             }
         });

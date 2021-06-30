@@ -58,7 +58,6 @@
                                 <form id="form_editar_contrato" action="{{ route('editar_contratos') }}" class="number-tab-steps wizard-circle" method="POST" >
                                     @csrf
                                     <input type="hidden" name="id_contrato" id="id_contrato" value="{{ $contrato->id_contrato }}">
-                                    {{-- <input type="hidden" value="{{ $contrato->numero_contrato }}" name="numero_contrato_viejo" id="numero_contrato_viejo"> --}}
                                     <input type="hidden" value="{{ $contrato->id_contratista }}" name="id_contratista" id="id_contratista">
                                     <!-- Paso 1 -->
                                     <h6>Paso 1</h6>
@@ -78,7 +77,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="fecha_inicio">Fecha inicio: (*)</label>
-                                                    <input type="text" readonly value="{{ $contrato->fecha_inicio }}"  class="form-control border-primary @error('fecha_inicio') is-invalid @enderror" name="fecha_inicio" id="fecha_inicio">
+                                                    <input type="date" value="{{ date("Y-m-d", strtotime($contrato->fecha_inicio)) }}"  class="form-control border-primary @error('fecha_inicio') is-invalid @enderror" name="fecha_inicio" id="fecha_inicio">
                                                     @error('fecha_inicio')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -89,7 +88,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="fecha_fin">Fecha fin: (*)</label>
-                                                    <input type="text" readonly value="{{ $contrato->fecha_fin }}" class="form-control border-primary @error('fecha_fin') is-invalid @enderror" name="fecha_fin" id="fecha_fin">
+                                                    <input type="date" value="{{ date("Y-m-d", strtotime($contrato->fecha_fin)) }}" class="form-control border-primary @error('fecha_fin') is-invalid @enderror" name="fecha_fin" id="fecha_fin">
                                                     @error('fecha_fin')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -116,9 +115,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="forma_pago_contrato">Forma de pago del contrato: (*)</label>
-                                                    <textarea name="forma_pago_contrato" id="forma_pago_contrato" cols="30" rows="5" class="form-control border-primary @error('forma_pago_contrato') is-invalid @enderror">
-                                                        {{ $contrato->forma_pago }}
-                                                    </textarea>
+                                                    <textarea name="forma_pago_contrato" id="forma_pago_contrato" cols="30" rows="5" class="form-control border-primary @error('forma_pago_contrato') is-invalid @enderror">{{ $contrato->forma_pago }}</textarea>
                                                     @error('forma_pago_contrato')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror

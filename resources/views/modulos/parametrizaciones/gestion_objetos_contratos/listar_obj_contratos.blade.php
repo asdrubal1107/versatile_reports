@@ -68,8 +68,6 @@
                                                 <th>#</th>
                                                 <th>Nombre</th>
                                                 <th>Detalle</th>
-                                                <th>Fecha creación</th>
-                                                <th>Fecha actualización <span style="font-size: 11px;">(ultima)</span></th>
                                                 <th>Opciones</th>
                                             </tr>
                                         </thead>
@@ -97,8 +95,6 @@
             {data: 'id_objeto', name: 'id_objeto'},
             {data: 'nombre', name: 'nombre'},
             {data: 'detalle', name: 'detalle'},
-            {data: 'created_at', name: 'created_at'},
-            {data: 'updated_at', name: 'updated_at'},
             {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false}
         ],
         language : {

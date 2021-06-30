@@ -14,8 +14,11 @@ use App\Models\Municipio;
 use App\Models\Objeto;
 use App\Models\Proceso;
 use App\Models\Supervisor;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
-class ContratistaControler extends Controller
+class ContratistaController extends Controller
 {
     /* Gestion Contratistas */
     public function view_list(){
@@ -54,39 +57,52 @@ class ContratistaControler extends Controller
     }
 
     public function list(){
-        $contratistas = Contratista::all();
-
-        return DataTables::of($contratistas)
-            ->editColumn('estado', function($contratista){
-                if ($contratista->estado == 1) {
-                    $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-success">Activo</div>';
-                }else{
-                    $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-danger">Inactivo</div>';
-                }
-                return $estado;
-            })
-            ->addColumn('Opciones', function ($contratista) {
-                // $btn_editar = '<a style="width: 30px;" href="/contratistas/editar/'.$contratista->id_contratista.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i></a>';
-                $btn_contratos = '<a style="width: 30px;" href="/contratistas/contratos/listar/'.$contratista->id_contratista.'" class="btn btn-sm btn-info btn-estados"><i class="ft-file"></i></a>';
-                $btn_detalles = '<a style="width: 30px;" href="/contratistas/detalles/'.$contratista->id_contratista.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
-                if ($contratista->estado == 1) {
-                    $btn_estado = '<a style="width: 30px;" href="/contratistas/cambiar/estado/'.$contratista->id_contratista.'/0" class="btn btn-sm btn-danger btn-estados"><i class="ft-alert-octagon"></i></a>';
-                }else{
-                    $btn_estado = '<a style="width: 30px;" href="/contratistas/cambiar/estado/'.$contratista->id_contratista.'/1" class="btn btn-sm btn-success btn-estados"><i class="ft-check-square"></i></a>';
-                }
-                return /* $btn_editar . ' ' . */ $btn_detalles . ' ' . $btn_contratos . ' ' . $btn_estado;
-            })
-            ->rawColumns(['Opciones', 'estado'])
-            ->make(true);
+        if(request()->ajax()){
+            $contratistas = Contratista::all();
+    
+            return DataTables::of($contratistas)
+                ->editColumn('estado', function($contratista){
+                    if ($contratista->estado == 1) {
+                        $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-success">Activo</div>';
+                    }else{
+                        $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-danger">Inactivo</div>';
+                    }
+                    return $estado;
+                })
+                ->addColumn('Opciones', function ($contratista) {
+                    // $btn_editar = '<a style="width: 30px;" href="/contratistas/editar/'.$contratista->id_contratista.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i></a>';
+                    $btn_contratos = '<a style="width: 30px;" href="/contratistas/contratos/listar/'.$contratista->id_contratista.'" class="btn btn-sm btn-info btn-estados"><i class="ft-file"></i></a>';
+                    $btn_detalles = '<a style="width: 30px;" href="/contratistas/detalles/'.$contratista->id_contratista.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
+                    if ($contratista->estado == 1) {
+                        $btn_estado = '<a style="width: 30px;" href="/contratistas/cambiar/estado/'.$contratista->id_contratista.'/0" class="btn btn-sm btn-danger btn-estados"><i class="ft-alert-octagon"></i></a>';
+                    }else{
+                        $btn_estado = '<a style="width: 30px;" href="/contratistas/cambiar/estado/'.$contratista->id_contratista.'/1" class="btn btn-sm btn-success btn-estados"><i class="ft-check-square"></i></a>';
+                    }
+                    return /* $btn_editar . ' ' . */ $btn_detalles . ' ' . $btn_contratos . ' ' . $btn_estado;
+                })
+                ->rawColumns(['Opciones', 'estado'])
+                ->make(true);
+        }
+        return redirect()->route('dashboard');
     }
 
     public function save(Request $request){
-        $this->validations($request);
         $request->validate([
-            'documento' => 'required|numeric|digits_between:6,14|unique:contratistas,documento',
-            'firma' => 'required|image|mimes:jpeg,png,jpg|max:1024'
+            'tipo_documento' => 'required|in:CC,CE',
+            'id_municipio' => 'required|exists:municipios,id_municipio',
+            'documento' => 'required|numeric|digits_between:6,14|unique:contratistas,documento|unique:usuarios,documento',
+            'firma' => 'required|image|mimes:jpeg,png,jpg|max:1024',
+            'nombre' => 'required|string|min:3|max:40',
+            'primer_apellido' => 'required|string|min:3|max:30',
+            'segundo_apellido' => 'nullable|string|min:3|max:30',
+            'correo' => 'required|email|min:6|max:50|unique:contratistas,correo|unique:usuarios,email',
+            'correo_sena' => 'required|email|min:6|max:50|unique:contratistas,correo_sena',
+            'celular_uno' => 'required|string|min:6|max:15',
+            'celular_dos' => 'nullable|string|min:6|max:15',
+            'password' => 'required|string|min:8|max:20'
         ]);
         try {
+            DB::beginTransaction();
             $fecha = Carbon::now();
             $fecha_dia = $fecha->format('d-m-Y');
             $firma = $request->documento.'.'.$fecha_dia.'_'.time().'.'.$request->firma->extension();
@@ -105,6 +121,15 @@ class ContratistaControler extends Controller
                 'firma' => $firma
             ]);
 
+            User::create([
+                'tipo_documento' => $request->tipo_documento,
+                'documento' => $request->documento,
+                'password' => Hash::make($request->password),
+                'email' => $request->correo,
+                'id_rol' => '3'
+            ]);
+
+            db::commit();
             return redirect()->route('listar_contratistas')->withSuccess('Se creo con éxito');
         } catch (Exception $e) {
             return redirect()->route('listar_contratistas')->withErrors('Ocurrio un error. Error: '.$e->getMessage());
@@ -112,16 +137,44 @@ class ContratistaControler extends Controller
     }
 
     public function update(Request $request){
-        // dd($request->all()); 1624546683.png
-        $this->validations($request);
+        if ($request->correo_anterior != $request->correo) {
+            $request->validate([
+                'correo' => 'required|email|min:6|max:50|unique:contratistas,correo|unique:usuarios,email'
+            ]);
+        }
+        if ($request->correo_sena_anterior != $request->correo_sena) {
+            $request->validate([
+                'correo_sena' => 'required|email|min:6|max:50|unique:contratistas,correo_sena'
+            ]);
+        }
+        if ($request->documento_anterior != $request->documento) {
+            $request->validate([
+                'documento' => 'required|numeric|digits_between:6,14|unique:contratistas,documento|unique:usuarios,documento',
+            ]);
+        }
         $request->validate([
-            'documento' => 'required|numeric|digits_between:6,14'
+            'tipo_documento' => 'required|in:CC,CE',
+            'id_municipio' => 'required|exists:municipios,id_municipio',
+            'documento' => 'required|numeric|digits_between:6,14',
+            'firma' => 'nullable|image|mimes:jpeg,png,jpg|max:1024',
+            'nombre' => 'required|string|min:3|max:40',
+            'primer_apellido' => 'required|string|min:3|max:30',
+            'segundo_apellido' => 'nullable|string|min:3|max:30',
+            'correo' => 'required|email|min:6|max:50',
+            'correo_sena' => 'required|email|min:6|max:50',
+            'celular_uno' => 'required|string|min:6|max:15',
+            'celular_dos' => 'nullable|string|min:6|max:15',
+            'password' => 'nullable|string|min:8|max:20'
         ]);
         try {
+            DB::beginTransaction();
             $contratista = Contratista::find($request->id_contratista);
+            $usuario = User::select('*')->where('documento', '=', ''.$contratista->documento.'')->take(1)->get();
+
             if ($contratista == null) {
                 return redirect()->route('listar_contratistas')->withErrors('No se actualizo el contratista');
             }
+
             if ($request->firma != null) {
                 $request->validate(['firma' => 'image|mimes:jpeg,png,jpg|max:1024']);
                 unlink("uploads/firmas/".$contratista->firma);
@@ -157,14 +210,31 @@ class ContratistaControler extends Controller
                 ]);
             }
 
+            if ($request->password == null) {
+                $usuario[0]->update([
+                    'tipo_documento' => $request->tipo_documento,
+                    'documento' => $request->documento,
+                    'email' => $request->correo
+                ]);
+            }else{
+                $usuario[0]->update([
+                    'tipo_documento' => $request->tipo_documento,
+                    'documento' => $request->documento,
+                    'password' => Hash::make($request->password),
+                    'email' => $request->correo
+                ]);
+            }
+            DB::commit();
             return redirect()->route('listar_contratistas')->withSuccess('Se modifico con éxito');
         } catch (Exception $e) {
+            DB::rollBack();
             return redirect()->route('listar_contratistas')->withErrors('Ocurrio un error. Error: '.$e->getMessage());
         }
     }
 
     public function update_state($id, $estado){
         $contratista = Contratista::find($id);
+        $usuario = User::select('*')->where('documento', '=', ''.$contratista->documento.'')->take(1)->get();
 
         if ($contratista == null) {
             return redirect()->route('listar_contratistas')->withErrors('No se encontro el contratista');
@@ -175,26 +245,15 @@ class ContratistaControler extends Controller
         }
 
         try{
+            DB::beginTransaction();
             $contratista->update(['estado' => $estado]);
+            $usuario[0]->update(['estado' => $estado]);
+            DB::commit();
             return redirect()->route('listar_contratistas')->withSuccess('Se modifico el estado del contratista');
         }catch(Exception $e){
+            DB::rollBack();
             return redirect()->route('listar_contratistas')->withErrors('Ocurrio un error\nError: '.$e->getMessage());
         }
-    }
-
-    public function validations(Request $request){
-        $request->validate([
-            'tipo_documento' => 'required|in:CC,CE',
-            'id_municipio' => 'required|exists:municipios,id_municipio',
-            'nombre' => 'required|string|min:3|max:40',
-            'primer_apellido' => 'required|string|min:3|max:30',
-            'segundo_apellido' => 'nullable|string|min:3|max:30',
-            'correo' => 'required|email|min:6|max:50',
-            'correo_sena' => 'required|email|min:6|max:50',
-            'celular_uno' => 'required|string|min:6|max:15',
-            'celular_dos' => 'nullable|string|min:6|max:15',
-            'estado' => 'in:1,0'
-        ]);
     }
 
     /* Gestion contratistas - Contratos */
@@ -235,37 +294,50 @@ class ContratistaControler extends Controller
     }
 
     public function list_contratos($id){
-        $contratos = Contrato::join('contratistas', 'contratistas.id_contratista', '=', 'contratos.id_contratista')
-        ->select('contratos.*', 'contratistas.nombre', 'contratistas.documento')
-        ->where('contratos.id_contratista', '=', ''.$id.'')->get();
-        return DataTables::of($contratos)
-            ->editColumn('estado', function($contrato){
-                if ($contrato->estado == 0) {
-                    $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-warning">Contrato sin asignar</div>';
-                }elseif ($contrato->estado == 1){
-                    $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-success">Contrato asignado</div>';
-                }else{
-                    $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-danger">Contrato vencido</div>';
-                }
-                return $estado;
-            })
-            ->addColumn('Opciones', function ($contrato) {
-                if ($contrato->estado == 0) {
-                    $btn_detalles = '<a style="width: 30px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
-                    $btn_editar = '<a style="width: 30px;" href="/contratistas/contratos/editar/'.$contrato->id_contrato.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i></a>';
-                    $btn_estado = '<a style="width: 30px;" href="/contratistas/contratos/cambiar/estado/'.$contrato->id_contrato.'/1" class="btn btn-sm btn-success btn-estados"><i class="ft-check-square"></i></a>';
-                    return $btn_editar . ' ' . $btn_detalles . ' ' . $btn_estado;
-                }elseif($contrato->estado == 1){
-                    $btn_detalles = '<a style="width: 45px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
-                    $btn_estado = '<a style="width: 45px;" href="/contratistas/contratos/cambiar/estado/'.$contrato->id_contrato.'/2" class="btn btn-sm btn-danger btn-estados"><i class="ft-trash"></i></a>';
-                    return $btn_detalles . ' ' . $btn_estado;
-                }else{
-                    $btn_detalles = '<a style="width: 90px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
-                    return $btn_detalles;
-                }
-            })
-            ->rawColumns(['Opciones', 'estado'])
-            ->make(true);
+        if(request()->ajax()){
+            $contratos = Contrato::join('contratistas', 'contratistas.id_contratista', '=', 'contratos.id_contratista')
+            ->select('contratos.*', 'contratistas.nombre', 'contratistas.documento')
+            ->where('contratos.id_contratista', '=', ''.$id.'')->get();
+            return DataTables::of($contratos)
+                ->editColumn('fecha_fin', function($contrato){
+                    $fecha_fin = $contrato->fecha_fin;
+                    $fecha_fin = date("d-m-Y", strtotime($fecha_fin));
+                    return $fecha_fin;
+                })
+                ->editColumn('fecha_inicio', function($contrato){
+                    $fecha_inicio = $contrato->fecha_inicio;
+                    $fecha_inicio = date("d-m-Y", strtotime($fecha_inicio));
+                    return $fecha_inicio;
+                })
+                ->editColumn('estado', function($contrato){
+                    if ($contrato->estado == 0) {
+                        $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-warning">Contrato sin asignar</div>';
+                    }elseif ($contrato->estado == 1){
+                        $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-success">Contrato asignado</div>';
+                    }else{
+                        $estado = '<div style="padding: 6px; font-size: 13px;" class="badge badge-danger">Contrato vencido</div>';
+                    }
+                    return $estado;
+                })
+                ->addColumn('Opciones', function ($contrato) {
+                    if ($contrato->estado == 0) {
+                        $btn_detalles = '<a style="width: 30px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
+                        $btn_editar = '<a style="width: 30px;" href="/contratistas/contratos/editar/'.$contrato->id_contrato.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i></a>';
+                        $btn_estado = '<a style="width: 30px;" href="/contratistas/contratos/cambiar/estado/'.$contrato->id_contrato.'/1" class="btn btn-sm btn-success btn-estados"><i class="ft-check-square"></i></a>';
+                        return $btn_editar . ' ' . $btn_detalles . ' ' . $btn_estado;
+                    }elseif($contrato->estado == 1){
+                        $btn_detalles = '<a style="width: 45px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
+                        $btn_estado = '<a style="width: 45px;" href="/contratistas/contratos/cambiar/estado/'.$contrato->id_contrato.'/2" class="btn btn-sm btn-danger btn-estados"><i class="ft-trash"></i></a>';
+                        return $btn_detalles . ' ' . $btn_estado;
+                    }else{
+                        $btn_detalles = '<a style="width: 90px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
+                        return $btn_detalles;
+                    }
+                })
+                ->rawColumns(['Opciones', 'estado', 'fecha_inicio', 'fecha_fin'])
+                ->make(true);
+        }
+        return redirect()->route('dashboard');
     }
 
     public function save_contrato(Request $request){
@@ -332,7 +404,6 @@ class ContratistaControler extends Controller
                 'fecha_fin' => $request->fecha_fin,
                 'valor' => $request->valor_contrato,
                 'forma_pago' => $request->forma_pago_contrato,
-                'id_contratista' => $request->id_contratista,
                 'id_proceso' => $request->id_proceso,
                 'id_objeto' => $request->id_objeto,
                 'id_supervisor' => $request->id_supervisor,

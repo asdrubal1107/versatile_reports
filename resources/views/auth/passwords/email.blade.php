@@ -34,7 +34,12 @@
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('dashboard/assets/css/style.css') }}">
     <!-- END: Custom CSS-->
-
+    <style>
+        .error{
+            color: red;
+            font-style: italic;
+        }
+    </style>
 </head>
 <!-- END: Head-->
 
@@ -64,7 +69,7 @@
                                                 {{ session('status') }}
                                             </div>
                                         @else
-                                            <form method="POST" action="{{ route('password.email') }}">
+                                            <form method="POST" id="email" action="{{ route('password.email') }}">
                                                 @csrf
 
                                                 <!-- Email -->
@@ -114,7 +119,29 @@
 
     <!-- BEGIN: Page JS-->
     <script src="{{ asset('dashboard/app-assets/js/scripts/forms/form-login-register.js') }}"></script>
-    <!-- END: Page JS-->
+    <!-- END: Page JS-->    
+
+    <script src="{{ asset('jquery_validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('jquery_validate/additional-methods.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#email').validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                },
+                messages: {
+                    email: {
+                        required: "Debe ingresar un correo electronico",
+                        email: "Ingrese un formato valido: ejemplo@ejemplo.com"
+                    }
+                }
+            });
+        })
+    </script>
 
 </body>
 <!-- END: Body-->

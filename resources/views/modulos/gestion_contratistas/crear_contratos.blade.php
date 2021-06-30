@@ -66,7 +66,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="numero_contrato">Numero contrato: (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('numero_contrato') is-invalid @enderror" name="numero_contrato" id="numero_contrato">
+                                                    <input type="text" autocomplete="off" class="form-control border-primary @error('numero_contrato') is-invalid @enderror" name="numero_contrato" id="numero_contrato">
                                                     @error('numero_contrato')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -77,7 +77,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="fecha_inicio">Fecha inicio: (*)</label>
-                                                    <input type="date" placeholder="Ejemplo: xx-xx-xxx" class="form-control border-primary @error('fecha_inicio') is-invalid @enderror" name="fecha_inicio" id="fecha_inicio">
+                                                    <input type="date" class="form-control border-primary @error('fecha_inicio') is-invalid @enderror" name="fecha_inicio" id="fecha_inicio">
                                                     @error('fecha_inicio')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -88,7 +88,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="fecha_fin">Fecha fin: (*)</label>
-                                                    <input type="date" placeholder="Ejemplo: xx-xx-xxx" class="form-control border-primary @error('fecha_fin') is-invalid @enderror" name="fecha_fin" id="fecha_fin">
+                                                    <input type="date" class="form-control border-primary @error('fecha_fin') is-invalid @enderror" name="fecha_fin" id="fecha_fin">
                                                     @error('fecha_fin')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -104,7 +104,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="valor_contrato">Valor del contrato: (*)</label>
-                                                    <input type="text" class="form-control border-primary @error('valor_contrato') is-invalid @enderror" name="valor_contrato" id="valor_contrato">
+                                                    <input type="text" autocomplete="off" class="form-control border-primary @error('valor_contrato') is-invalid @enderror" name="valor_contrato" id="valor_contrato">
                                                     @error('valor_contrato')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -140,7 +140,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> 
                                     </fieldset>
 
                                     <!-- Paso 3 -->

@@ -23,14 +23,16 @@ class CentroController extends Controller
     }
 
     public function list(){
-        $centros = Centro::all();
-
-        return DataTables::of($centros)
-            ->addColumn('Opciones', function ($centro) {
-                return '<a style="width: 70px;" href="/parametrizaciones/centros/editar/'.$centro->id_centro.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i> Editar</a>';
-            })
-            ->rawColumns(['Opciones'])
-            ->make(true);
+        if(request()->ajax()){
+            $centros = Centro::all();
+            return DataTables::of($centros)
+                ->addColumn('Opciones', function ($centro) {
+                    return '<a style="width: 70px;" href="/parametrizaciones/centros/editar/'.$centro->id_centro.'" class="btn btn-sm btn-versatile_reports"><i class="ft-edit"></i> Editar</a>';
+                })
+                ->rawColumns(['Opciones'])
+                ->make(true);
+        }
+        return redirect()->route('dashboard');
     }
 
     public function save(Request $request){

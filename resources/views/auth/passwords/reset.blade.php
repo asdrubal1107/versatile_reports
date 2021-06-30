@@ -33,7 +33,13 @@
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('dashboard/assets/css/style.css') }}">
-    <!-- END: Custom CSS-->
+    <!-- END: Custom CSS--> 
+
+    <style>
+        .error{
+
+        }
+    </style>
 
 </head>
 <!-- END: Head-->
@@ -59,22 +65,21 @@
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form method="POST" action="{{ route('password.update') }}">
+                                        <form method="POST" id="cambiar_contraseña" action="{{ route('password.update') }}">
                                             @csrf
                                 
-                                            <input type="hidden" name="token" value="{{ $token }}">
-                                            <div>
-                                                <input readonly id="email" type="hidden" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-                                                @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                            </div>
+                                            <input type="hidden" name="token" value="{{ $token }}"> 
+                                            <input readonly id="email" type="hidden" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" autocomplete="email">
+                                            @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                            
                                 
                                             <!-- Password -->
                                             <fieldset class="form-group position-relative has-icon-left">
-                                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="{{ __('Contraseña')}}">
+                                                <input required id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autofocus autocomplete="new-password" placeholder="{{ __('Contraseña')}}">
                                                 @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -88,13 +93,13 @@
                                             <!-- Confirm password -->
                                             <fieldset class="form-group position-relative has-icon-left">
                                                 <div>
-                                                    <input placeholder="{{__('Confirmar contraseña')}}" id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                                    <input required placeholder="{{__('Confirmar contraseña')}}" id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                                 </div>
                                                 <div class="form-control-position">
                                                     <i class="la la-key"></i>
                                                 </div>
                                             </fieldset>
-                                            <button type="submit" class="btn btn-outline-info btn-block"><i class="la la-refresh"></i>Restablecer contraseña</button>
+                                            <button id="btn_enviar" type="submit" class="btn btn-outline-info btn-block"><i class="la la-refresh"></i>Restablecer contraseña</button>
                                         </form>
                                     </div>
                                 </div>
@@ -125,7 +130,6 @@
     <!-- BEGIN: Page JS-->
     <script src="{{ asset('dashboard/app-assets/js/scripts/forms/form-login-register.js') }}"></script>
     <!-- END: Page JS-->
-
 </body>
 <!-- END: Body-->
 
