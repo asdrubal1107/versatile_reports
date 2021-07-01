@@ -15,13 +15,15 @@
     <div class="content-wrapper">
         <div class="content-header row">
             <div class="content-header-left col-md-6 col-12 mb-2">
-                <h3 class="content-header-title mb-0">Gestion de requerimientos</h3>
+                <h3 class="content-header-title mb-0">Detalle del requerimiento</h3>
                 <div class="row breadcrumbs-top">
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a>
                             </li>
-                            <li class="breadcrumb-item active">Lista de requerimientos
+                            <li class="breadcrumb-item"><a href="{{ route('listar_rev_requerimientos') }}">Listar requerimientos</a>
+                            </li>
+                            <li class="breadcrumb-item active">Detalle del requerimiento
                             </li>
                         </ol>
                     </div>
@@ -29,20 +31,14 @@
             </div>
         </div>
         <div class="content-body"> 
-            <!-- Inicio tabla hoverable -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Lista de requerimientos</h4>
+                            <h4 class="card-title">Detalle del requerimiento</h4>
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
-                                    <li>
-                                        <a href="{{ route('view_crear_requerimientos') }}" class="btn btn-versatile_reports">
-                                            <i class="ft-plus-square"></i> Nuevo
-                                        </a>
-                                    </li>
                                     <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
                                 </ul>
                             </div>
@@ -62,15 +58,14 @@
                                     </div>
                                 @endif
                                 <div class="table-responsive">
-                                    <table id="requerimientos" style="width: 100%;" class="table table-bordered table-hover">
+                                    <table id="requerimientos_detalles" class="table table-column">
                                         <thead>
                                             <tr>
-                                                <th style="width: 15%;">Nombre</th>
-                                                <th style="width: 25%;">Detalle</th>
-                                                <th style="width: 15%;">Proceso</th>
-                                                <th style="width: 10%;">Fecha finalización</th>
-                                                <th style="width: 15%;">Estado</th>
-                                                <th style="width: 20%;">Opciones</th>
+                                                <th>Documento contratista</th>
+                                                <th>Numero contrato</th>
+                                                <th>Fecha carga</th>
+                                                <th>Estado</th>
+                                                <th>Opciones</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -80,7 +75,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Fin tabla hoverable -->
         </div>
     </div>
 </div>
@@ -88,15 +82,15 @@
 
 @section('javascript')
 <script>
-    $('#requerimientos').DataTable({
+    var id_requerimiento = {{ $requerimiento->id_requerimiento }}
+    $('#requerimientos_detalles').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '/requerimientos/ratsil',
+        ajax: "/revision/requerimientos/detalles/listar/"+id_requerimiento,
         columns: [
-            {data: 'nombre', name: 'nombre'},
-            {data: 'detalle', name: 'detalle'},
-            {data: 'nombre_proceso', name: 'nombre_proceso'},
-            {data: 'fecha_finalizacion', name: 'fecha_finalizacion'},
+            {data: 'documento', name: 'documento'},
+            {data: 'numero_contrato', name: 'numero_contrato'},
+            {data: 'fecha_carga', name: 'fecha_carga'},
             {data: 'estado', name: 'estado'},
             {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false}
         ],

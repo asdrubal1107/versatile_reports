@@ -6,6 +6,9 @@
             color: red;
             font-style: italic;
         }
+        #progressBar{
+            width: 100%;
+        }
     </style>
 @endsection
 
@@ -15,15 +18,15 @@
     <div class="content-wrapper">
         <div class="content-header row">
             <div class="content-header-left col-md-6 col-12 mb-2">
-                <h3 class="content-header-title mb-0">Gestion objetos de contrato</h3>
+                <h3 class="content-header-title mb-0">Entrega de requerimientos - Cargar archivo</h3>
                 <div class="row breadcrumbs-top">
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="{{ route('listar_objetos_contratos') }}">Listar objetos de contrato</a>
+                            <li class="breadcrumb-item"><a href="{{ route('listar_ent_requerimientos') }}">Listar requerimientos</a>
                             </li>
-                            <li class="breadcrumb-item active">Crear objeto de contrato
+                            <li class="breadcrumb-item active">Cargar archivo
                             </li>
                         </ol>
                     </div>
@@ -36,7 +39,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Crear objeto de contrato</h4>
+                            <h4 class="card-title">Cargar archivo</h4>
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
@@ -46,31 +49,28 @@
                         </div>
                         <div class="card-body">
                             <div class="card-content collapse show">
-                                <form id="form_crear_objeto" class="form" action="{{ route('crear_objeto_contrato') }}" method="POST">
+                                <form enctype="multipart/form-data" id="form_insertar_archivo" class="form" action="{{ route('insertar_archivo') }}" method="POST">
                                     @csrf
+                                    <input type="hidden" name="id_requerimiento" id="id_requerimiento" value="{{ $requerimiento->id_requerimiento }}">
                                     <div class="row justify-content-md-center">
                                         <div class="col-md-6">
                                             <div class="form-body">
                                                 <div class="form-group">
-                                                    <label for="nombre">Nombre objeto contrato (*)</label>
-                                                    <input autocomplete="off" type="text" class="form-control border-primary @error('nombre') is-invalid @enderror" name="nombre" id="nombre">
-                                                    @error('nombre')
+                                                    <label for="archivo">Archivo (*)</label>
+                                                    <input autocomplete="off" onchange="uploadFile()" type="file" class="form-control border-primary @error('archivo') is-invalid @enderror" name="archivo" id="archivo">
+                                                    @error('archivo')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="detalle">Detalle objeto contrato (*)</label>
-                                                    <textarea name="detalle" class="form-control border-primary @error('detalle') is-invalid @enderror" id="detalle" cols="30" rows="10"></textarea>
-                                                    @error('detalle')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
+                                                    <progress id="progressBar" value="0" max="100"></progress>
+                                                    <h3 id="status"></h3>
+                                                    <p id="loaded_n_total"></p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="fomr-actions text-center">
-                                        <a href="{{ route('listar_objetos_contratos') }}" class="btn btn-warning mr-1">
+                                        <a href="{{ route('listar_centros') }}" class="btn btn-warning mr-1">
                                             <i class="la la-close"></i>
                                             Cancelar
                                         </a>
@@ -94,32 +94,61 @@
 @section('javascript')
 <script>
     $(document).ready(function() {
-        $("#form_crear_objeto").validate({
+        $("#form_insertar_archivo").validate({
             rules: {
-                nombre : {
-                  required: true,
-                  minlength: 3,
-                  maxlength: 40
-                },
-                detalle : {
-                  required: true,
-                  minlength: 20,
-                  maxlength: 600
+                archivo: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 40,
+                    extension: "pdf"
                 },
             },
             messages : {
-                nombre: {
-                    required: "Por favor ingrese el nombre del objeto de contrato",
-                    minlength: "El nombre debe contener por lo menos 3 caracteres",
-                    maxlength: "El nombre debe contener como maximo 40 caracteres"
-                },
-                detalle: {
-                    required: "Por favor ingrese un detalle del objeto de contrato",
-                    minlength: "El detalle debe contener por lo menos 20 caracteres",
-                    maxlength: "El detalle debe contener como maximo 600 caracteres"
+                archivo: {
+                    required: "Campo obligatorio",
+                    minlength: "El archivo debe tener un nombre de minimo 4 caracteres",
+                    maxlength: "El archivo debe tener un nombre de maximo 40 caracteres",
+                    extension: "El archivo debe estar en formato pdf"
                 }
             }
         });
   });
+    function _(el) {
+    return document.getElementById(el);
+    }
+
+    function uploadFile() {
+    var file = _("archivo").files[0];
+    // alert(file.name+" | "+file.size+" | "+file.type);
+    var formdata = new FormData();
+    formdata.append("archivo", file);
+    var ajax = new XMLHttpRequest();
+    ajax.upload.addEventListener("progress", progressHandler, false);
+    ajax.addEventListener("load", completeHandler, false);
+    ajax.addEventListener("error", errorHandler, false);
+    ajax.addEventListener("abort", abortHandler, false);
+    ajax.open("POST", "file_upload_parser.php");
+    ajax.send(formdata);
+    }
+
+    function progressHandler(event) {
+    _("loaded_n_total").innerHTML = "Cargado " + event.loaded + " bytes de " + event.total;
+    var percent = (event.loaded / event.total) * 100;
+    _("progressBar").value = Math.round(percent);
+    _("status").innerHTML = Math.round(percent) + "% cargando... porfavor espere.";
+    }
+
+    function completeHandler(event) {
+    _("status").innerHTML = event.target.responseText;
+    _("progressBar").value = 0;
+    }
+
+    function errorHandler(event) {
+    _("status").innerHTML = "Fallo al cargar el archivo";
+    }
+
+    function abortHandler(event) {
+    _("status").innerHTML = "La carga de archivo fue abortada";
+    }
 </script>
 @endsection

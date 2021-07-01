@@ -85,7 +85,7 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="id_proceso">id_proceso (*)</label>
+                                                    <label for="id_proceso">Proceso (*)</label>
                                                     <select class="form-control border-primary @error('id_proceso') is-invalid @enderror" name="id_proceso" id="id_proceso">
                                                         <option value="">Seleccion el proceso</option>
                                                         @foreach ($procesos as $item)

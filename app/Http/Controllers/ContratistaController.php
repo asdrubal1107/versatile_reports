@@ -326,11 +326,11 @@ class ContratistaController extends Controller
                         $btn_estado = '<a style="width: 30px;" href="/contratistas/contratos/cambiar/estado/'.$contrato->id_contrato.'/1" class="btn btn-sm btn-success btn-estados"><i class="ft-check-square"></i></a>';
                         return $btn_editar . ' ' . $btn_detalles . ' ' . $btn_estado;
                     }elseif($contrato->estado == 1){
-                        $btn_detalles = '<a style="width: 45px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
-                        $btn_estado = '<a style="width: 45px;" href="/contratistas/contratos/cambiar/estado/'.$contrato->id_contrato.'/2" class="btn btn-sm btn-danger btn-estados"><i class="ft-trash"></i></a>';
+                        $btn_detalles = '<a style="width: 30px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
+                        $btn_estado = '<a style="width: 30px;" href="/contratistas/contratos/cambiar/estado/'.$contrato->id_contrato.'/2" class="btn btn-sm btn-danger btn-estados"><i class="ft-trash"></i></a>';
                         return $btn_detalles . ' ' . $btn_estado;
                     }else{
-                        $btn_detalles = '<a style="width: 90px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
+                        $btn_detalles = '<a style="width: 60px;" href="/contratistas/contratos/detalles/'.$contrato->id_contrato.'" class="btn btn-sm btn-gris"><i class="ft-eye"></i></a>';
                         return $btn_detalles;
                     }
                 })
@@ -449,9 +449,10 @@ class ContratistaController extends Controller
         try {
             $contrato = Contrato::find($id);
             if ($estado == 1) {
-                $contrato_viejo = Contrato::select('id_contrato')->where('estado', '=', '1');
-                if ($contrato_viejo != null) {
-                    $contrato_viejo->update([
+                $contrato_viejo = Contrato::select('id_contrato')->where('id_contratista', '=', ''.$contrato->id_contratista.'')->where('estado', '=', '1')->get();
+                // dd($contrato_viejo);
+                if (count($contrato_viejo) > 0) {
+                    $contrato_viejo[0]->update([
                         'estado' => 2
                     ]);
                 }

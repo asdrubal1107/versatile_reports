@@ -6,9 +6,11 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CentroController;
 use App\Http\Controllers\ContratistaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EntregaRequerimientoController;
 use App\Http\Controllers\ObjetoController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\RequerimimientoController;
+use App\Http\Controllers\RevisionRequerimientoController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\UsuarioController;
@@ -109,12 +111,22 @@ Route::middleware(['auth'])->group(function(){
         //Modulo gestion de usuarios
         Route::get('/usuarios', [UsuarioController::class, 'view_list'])->name('listar_usuarios');
         Route::get('/usuarios/ratsil', [UsuarioController::class, 'list']);
+        //Modulo revisión de requerimientos
+        Route::get('/revision/requerimientos', [RevisionRequerimientoController::class, 'view_list'])->name('listar_rev_requerimientos');
+        Route::get('/revision/requerimientos/listar', [RevisionRequerimientoController::class, 'list']);
+        Route::get('/revision/requerimientos/detalles/{id}', [RevisionRequerimientoController::class, 'view_list_details']);
+        Route::get('/revision/requerimientos/detalles/listar/{id}', [RevisionRequerimientoController::class, 'list_details']);
+        Route::get('/revision/requerimientos/archivo/cambiar/estado/{id}/{estado}', [RevisionRequerimientoController::class, 'update_state']);
+        Route::get('/revision/requerimientos/descargar/archivo/{nombre}', [RevisionRequerimientoController::class, 'download_archive']);
     });
     Route::middleware(['Supervisor'])->group(function(){
               
     });
     Route::middleware(['Contratista'])->group(function(){
-
+        Route::get('/entrega/requerimiento', [EntregaRequerimientoController::class, 'view_list'])->name('listar_ent_requerimientos');
+        Route::get('/entrega/requerimiento/listar', [EntregaRequerimientoController::class, 'list']);
+        Route::get('/entrega/requerimiento/cargar/archivo/{id}', [EntregaRequerimientoController::class, 'view_insert_archive']);
+        Route::post('/entrega/requerimiento/guardar/archivo', [EntregaRequerimientoController::class, 'insert_archive'])->name('insertar_archivo');
     });
 });
 

@@ -1,5 +1,14 @@
 @extends('layouts.principal')
 
+@section('style')
+    <style>
+        .page-item.active .page-link {
+            color: #fff !important;
+            background-color: #E96928 !important;
+        }
+    </style>
+@endsection
+
 @section('contenido')
 <div class="app-content content">
     <div class="content-overlay"></div>
@@ -32,65 +41,34 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="card-content collapse show">
-                            <div class="table-responsive">
-                                <table class="table table-column">
-                                    <thead>
-                                        <tr>
-                                            <th>Requerimiento</th>
-                                            <th>Detalles</th>
-                                            <th>Fecha finalización</th>
-                                            <th>Estado</th>
-                                            <th style="width: 285px; text-align: center;">Opciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Salud ocupacional</td>
-                                            <td>Buenas tardes, porfavor adjuntar copia de la salud ocupacional del mes de octube</td>
-                                            <td>25/06/2021</td>
-                                            <td>No aprobado</td>
-                                            <td style="width: 285px">
-                                                <a href="#" style="width: 100px;" class="btn btn-versatile_reports"><i class="ft-paperclip"> Entregar</i></a>
-                                                <a href="#" style="width: 100px;" class="btn btn-info btn-estados"><i class="ft-download"> Descargar</i></a>
-                                            </td>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <td>Informe</td>
-                                            <td>Buenas tardes, completar y entregar el informe antes de la fecha plazo, muchas gracias</td>
-                                            <td>20/06/2021</td>
-                                            <td>Aprobado</td>
-                                            <td style="width: 285px">
-                                                <a href="#" style="width: 100px;" class="btn btn-versatile_reports"><i class="ft-paperclip"> Entregar</i></a>
-                                                <a href="#" style="width: 100px;" class="btn btn-info btn-estados"><i class="ft-file"> Reporte</i></a>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>Salud ocupacional</td>
-                                            <td>Buenas tardes, porfavor adjuntar copia de la salud ocupacional del mes de octube</td>
-                                            <td>25/06/2021</td>
-                                            <td>No aprobado</td>
-                                            <td style="width: 285px">
-                                                <a href="#" style="width: 100px;" class="btn btn-versatile_reports"><i class="ft-paperclip"> Entregar</i></a>
-                                                <a href="#" style="width: 100px;" class="btn btn-info btn-estados"><i class="ft-download"> Descargar</i></a>
-                                            </td>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <td>Informe</td>
-                                            <td>Buenas tardes, completar y entregar el informe antes de la fecha plazo, muchas gracias</td>
-                                            <td>20/06/2021</td>
-                                            <td>Aprobado</td>
-                                            <td style="width: 285px">
-                                                <a href="#" style="width: 100px;" class="btn btn-versatile_reports"><i class="ft-paperclip"> Entregar</i></a>
-                                                <a href="#" style="width: 100px;" class="btn btn-info btn-estados"><i class="ft-file"> Reporte</i></a>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="card-body">
+                            <div class="card-content collapse show">
+                                @if(Session::has('success'))
+                                    <div class="alert alert-success">
+                                        {{Session::get('success')}}
+                                    </div>
+                                @endif
+                                @if ($errors->any())
+                                    <div class="alert alert-danger" role="alert">
+                                        @foreach ($errors->all() as $item)
+                                            {{$item}}
+                                        @endforeach
+                                    </div>
+                                @endif
+                                <div class="table-responsive">
+                                    <table id="requerimientos" class="table table-column">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 15%;">Nombre</th>
+                                                <th style="width: 25%;">Detalle</th>
+                                                <th style="width: 20%;">Tipo requerimiento</th>
+                                                <th style="width: 15%;">Fecha finalización</th>
+                                                <th style="width: 10%;">Estado</th>  
+                                                <th style="width: 15%;">Opciones</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -99,4 +77,45 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+<script>
+    $('#requerimientos').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '/entrega/requerimiento/listar',
+        columns: [
+            {data: 'nombre', name: 'nombre'},
+            {data: 'detalle', name: 'detalle'},
+            {data: 'tipo_requerimiento', name: 'tipo_requerimiento'},
+            {data: 'fecha_finalizacion', name: 'fecha_finalizacion'},
+            {data: 'estado', name: 'estado'},
+            {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false}
+        ],
+        language : {
+            "processing": "Procesando...",
+            "zeroRecords": "No se encontraron resultados",
+            "emptyTable": "Ningún dato disponible en esta tabla",
+            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "infoThousands": ",",
+            "loadingRecords": "Cargando...",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "info": "Mostrando de _START_ a _END_ de _TOTAL_ entradas",
+            "lengthMenu": "Mostrar <select>"+
+                        "<option value='10'>10</option>"+
+                        "<option value='25'>25</option>"+
+                        "<option value='50'>50</option>"+
+                        "<option value='-1'>Todos</option>"+
+                        "</select> registros"
+        }
+    });
+</script>
 @endsection

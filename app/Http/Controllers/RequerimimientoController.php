@@ -28,7 +28,8 @@ class RequerimimientoController extends Controller
     }
 
     public function list(){
-        $requerimientos = Requerimiento::all();
+        $requerimientos = Requerimiento::join('procesos', 'procesos.id_proceso', '=', 'requerimientos.id_proceso')
+        ->select('requerimientos.*', 'procesos.nombre as nombre_proceso')->get();
         return DataTables::of($requerimientos)
         ->editColumn('estado', function($requerimiento){
             if ($requerimiento->estado == 1) {

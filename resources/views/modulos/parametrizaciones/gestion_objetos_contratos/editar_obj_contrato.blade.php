@@ -61,8 +61,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="detalle">Detalle objeto contrato (*)</label>
-                                                    {{-- <input type="text" value="{{ $objeto->detalle }}" class="form-control border-primary @error('detalle') is-invalid @enderror" name="detalle" id="detalle"> --}}
-                                                    <textarea name="detalle" class="form-control border-primary @error('nombre') is-invalid @enderror" id="detalle" cols="30" rows="10">{{ $objeto->detalle }}</textarea>
+                                                    <textarea name="detalle" class="form-control border-primary @error('detalle') is-invalid @enderror" id="detalle" cols="30" rows="10">{{ $objeto->detalle }}</textarea>
                                                     @error('detalle')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror

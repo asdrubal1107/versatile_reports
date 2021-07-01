@@ -5,7 +5,7 @@
             </li>
             <li class=" nav-item"><a href="{{ route('listar_contratistas') }}"><i class="la la-group"></i><span class="menu-title">Contratistas</span></a>
             </li>
-            <li class=" nav-item"><a href="#"><i class="la la-list-alt"></i><span class="menu-title">Revisión de<br>Requerimientos</span></a>
+            <li class=" nav-item"><a href="{{ route('listar_rev_requerimientos') }}"><i class="la la-list-alt"></i><span class="menu-title">Revisión de<br>Requerimientos</span></a>
             </li>
             <li class=" nav-item"><a href="{{ route('listar_requerimientos') }}"><i class="la la-database"></i><span class="menu-title">Gestión de<br>Requerimientos</span></a>
             </li>

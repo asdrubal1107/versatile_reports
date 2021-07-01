@@ -72,9 +72,9 @@
         @if(Auth::user()->id_rol == 1) 
             @include('layouts.plantilla.sidebar_administrador')
         @elseif(Auth::user()->id_rol == 2) 
-            @include('layouts.plantilla.sidebar_contratista')
-        @elseif(Auth::user()->id_rol == 3)
             @include('layouts.plantilla.sidebar_supervisor')
+        @elseif(Auth::user()->id_rol == 3)
+            @include('layouts.plantilla.sidebar_contratista')
         @endif
     @endif
     <!-- END: Main Menu-->
