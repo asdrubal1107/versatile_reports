@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Exception;
 use DataTables;
 use PDF;
+use App\Exports\ContratistaExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Centro;
 use App\Models\Contrato;
 use App\Models\Contratista;
@@ -292,11 +294,11 @@ class ContratistaController extends Controller
         }
     }
 
-    public function generar_excel($contratistas){
-
+    private function generar_excel($contratistas){
+        return Excel::download(new ContratistaExport, 'contratistas.xlsx');
     }
 
-    public function generar_pdf($contratistas, $input){
+    private function generar_pdf($contratistas, $input){
         $pdf = PDF::loadView('modulos.gestion_contratistas.reporte_pdf.reporte_contratistas', compact("contratistas", "input"))
                     ->setPaper('a4', 'landscape');
         return $pdf->stream('archivo.pdf');
