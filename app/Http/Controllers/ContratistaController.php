@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Centro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Exception;
 use DataTables;
-use App\Models\Contratista;
+use PDF;
+use App\Models\Centro;
 use App\Models\Contrato;
+use App\Models\Contratista;
 use App\Models\Departamento;
 use App\Models\Municipio;
 use App\Models\Objeto;
 use App\Models\Proceso;
 use App\Models\Supervisor;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class ContratistaController extends Controller
 {
@@ -254,6 +255,51 @@ class ContratistaController extends Controller
             DB::rollBack();
             return redirect()->route('listar_contratistas')->withErrors('Ocurrio un error\nError: '.$e->getMessage());
         }
+    }
+
+    public function view_reporte(){
+        return view('modulos.gestion_contratistas.reporte_pdf.crear_reporte');
+    }
+
+    public function generar_reporte(Request $request){
+        $input = $request->all();
+        $contratistas = Contratista::join('municipios', 'municipios.id_municipio', '=', 'contratistas.id_municipio')
+            ->join('departamentos', 'municipios.id_departamento', '=', 'departamentos.id_departamento')
+            ->join('contratos', 'contratos.id_contratista', '=', 'contratistas.id_contratista')
+            ->join('objetos', 'objetos.id_objeto', '=', 'contratos.id_objeto')
+            ->join('procesos', 'procesos.id_proceso', '=', 'contratos.id_proceso')
+            ->select(
+                    'contratistas.*', 
+                    'municipios.nombre as nombre_municipio',
+                    'contratos.numero_contrato',
+                    'contratos.forma_pago',
+                    'contratos.fecha_inicio',
+                    'contratos.fecha_fin',
+                    'contratos.valor',
+                    'objetos.nombre as nombre_objeto',
+                    'procesos.nombre as nomobre_proceso'
+                )
+            ->where('contratos.estado', '=', '1')
+            ->whereBetween($request->criterio, [$request->fecha_inicio, $request->fecha_fin])->get();
+        if (count($contratistas) > 0) {
+            if (isset($input["pdf"])) {
+                return $this->generar_pdf($contratistas, $input);
+            }else if(isset($input["excel"])){   
+                return $this->generar_excel($contratistas);
+            }
+        }else{
+            return redirect('contratistas')->withErrors('No se encontraron contratistas');
+        }
+    }
+
+    public function generar_excel($contratistas){
+
+    }
+
+    public function generar_pdf($contratistas, $input){
+        $pdf = PDF::loadView('modulos.gestion_contratistas.reporte_pdf.reporte_contratistas', compact("contratistas", "input"))
+                    ->setPaper('a4', 'landscape');
+        return $pdf->stream('archivo.pdf');
     }
 
     /* Gestion contratistas - Contratos */

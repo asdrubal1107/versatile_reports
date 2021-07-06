@@ -81,6 +81,8 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/parametrizaciones/procesos/crear/guardar', [ProcesoController::class, 'save'])->name('crear_procesos');
         //Modulo contratistas
         Route::get('/contratistas', [ContratistaController::class, 'view_list'])->name('listar_contratistas');
+        Route::get('/contratistas/reporte', [ContratistaController::class, 'view_reporte'])->name('view_reporte');
+        Route::post('/contratistas/generar/reporte', [ContratistaController::class, 'generar_reporte'])->name('generar_reporte_contratistas');
         Route::get('/contratistas/ratsil', [ContratistaController::class, 'list']);
         Route::get('/contratistas/editar/{id}', [ContratistaController::class, 'view_edit']);
         Route::get('/contratistas/listar/municipios', [ContratistaController::class, 'get_municipios']);

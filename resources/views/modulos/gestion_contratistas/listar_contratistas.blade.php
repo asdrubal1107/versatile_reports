@@ -39,6 +39,11 @@
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
                                     <li>
+                                        <a href="{{ route('view_reporte') }}" class="btn btn-gris">
+                                            <i class="ft-file"></i> Generar reporte
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="{{ route('view_crear_contratistas') }}" class="btn btn-versatile_reports">
                                             <i class="ft-plus-square"></i> Nuevo
                                         </a>

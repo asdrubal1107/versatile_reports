@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contrato;
 use Illuminate\Http\Request;
 use DataTables;
 use App\Models\Proceso;
@@ -9,6 +10,7 @@ use App\Models\Requerimiento;
 use App\Models\TipoRequerimiento;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 
 class RequerimimientoController extends Controller
 {
@@ -72,6 +74,16 @@ class RequerimimientoController extends Controller
                 'id_proceso' => $request->id_proceso,
                 'id_tipo_requerimiento' => $request->id_tipo_requerimiento
             ]);
+            $input = $request->all();
+            $contratistas = Contrato::join('contratistas', 'contratistas.id_contratista', '=', 'contratos.id_contratista')
+                ->select('contratistas.correo_sena')
+                ->where('contratos.id_proceso', '=', ''.$request->id_proceso.'')
+                ->where('contratos.estado', '=', '1')->get();
+            Mail::send('modulos.gestion_requerimientos.email.notificar_contratistas', compact("input"), function ($mail) use ($contratistas){
+                foreach ($contratistas as $item) {
+                    $mail->to($item->correo_sena);
+                }
+            });
             return redirect()->route('listar_requerimientos')->withSuccess('Se creo con exito');
         } catch (Exception $e) {
             return redirect()->route('listar_requerimientos')->withErrors('Ocurrio un error: '.$e->getMessage());
