@@ -2,16 +2,22 @@
 
 namespace App\Exports;
 
-use App\Models\Contratista;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class ContratistaExport implements FromCollection
+class ContratistaExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    protected $contratistas;
+
+    public function __construct($contratistas)
     {
-        return Contratista::all();
+        $this->contratistas = $contratistas;
+    }
+
+    public function view(): View
+    {
+        return view('modulos.gestion_contratistas.reporte_pdf.excel', [
+            'contratistas' => $this->contratistas
+        ]);
     }
 }

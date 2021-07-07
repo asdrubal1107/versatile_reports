@@ -279,7 +279,7 @@ class ContratistaController extends Controller
                     'contratos.fecha_fin',
                     'contratos.valor',
                     'objetos.nombre as nombre_objeto',
-                    'procesos.nombre as nomobre_proceso'
+                    'procesos.nombre as nombre_proceso'
                 )
             ->where('contratos.estado', '=', '1')
             ->whereBetween($request->criterio, [$request->fecha_inicio, $request->fecha_fin])->get();
@@ -295,7 +295,8 @@ class ContratistaController extends Controller
     }
 
     private function generar_excel($contratistas){
-        return Excel::download(new ContratistaExport, 'contratistas.xlsx');
+        $contratistas = new ContratistaExport($contratistas);
+        return Excel::download($contratistas, 'contratistas.xlsx');
     }
 
     private function generar_pdf($contratistas, $input){

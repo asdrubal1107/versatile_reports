@@ -115,6 +115,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/usuarios/ratsil', [UsuarioController::class, 'list']);
         //Modulo revisión de requerimientos
         Route::get('/revision/requerimientos', [RevisionRequerimientoController::class, 'view_list'])->name('listar_rev_requerimientos');
+        Route::post('/revision/requerimientos/generar/reporte', [RevisionRequerimientoController::class, 'generar_reporte'])->name('reporte_requerimientos');
         Route::get('/revision/requerimientos/listar', [RevisionRequerimientoController::class, 'list']);
         Route::get('/revision/requerimientos/detalles/{id}', [RevisionRequerimientoController::class, 'view_list_details']);
         Route::get('/revision/requerimientos/detalles/listar/{id}', [RevisionRequerimientoController::class, 'list_details']);

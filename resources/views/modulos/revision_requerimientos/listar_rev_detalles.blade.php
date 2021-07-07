@@ -39,6 +39,13 @@
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
+                                    <li>
+                                        <form action="{{ route('reporte_requerimientos') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" value="{{ $requerimiento->id_requerimiento }}" name="id_requerimiento" id="id_requerimiento">
+                                            <button type="submit" class="btn btn-gris"><i class="ft-file"></i> Generar reporte</button>
+                                        </form>
+                                    </li>
                                     <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
                                 </ul>
                             </div>

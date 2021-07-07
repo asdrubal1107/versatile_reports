@@ -5,7 +5,7 @@
                 <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
                 <li class="nav-item">
                     <a class="navbar-brand" href="{{ route('dashboard') }}">
-                        <img class="brand-logo logo_vr" alt="modern admin logo" src="{{ asset('dashboard/assets/img/logo.png')}}">
+                        <img class="brand-logo logo_vr" alt="VersatileReports logo" src="{{ asset('dashboard/assets/img/logo.png')}}">
                         <h3 class="brand-text text_logo_vr"><span>Versatile</span>Reports</h3> 
                     </a></li>   
                 <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a></li>

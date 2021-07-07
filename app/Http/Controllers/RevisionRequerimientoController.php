@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RespuestasRequerimientosExport;
 use App\Models\Requerimiento;
 use App\Models\RespuestaRequerimiento;
 use Illuminate\Http\Request;
 use DataTables;
 use Exception;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RevisionRequerimientoController extends Controller
 {
@@ -66,6 +68,27 @@ class RevisionRequerimientoController extends Controller
     public function download_archive($nombre){
         $archivo = public_path('uploads/archivos/'.$nombre.'');
         return response()->download($archivo);
+    }
+
+    public function generar_reporte(Request $request){
+        $respuestas_requerimientos = RespuestaRequerimiento::join('requerimientos', 'requerimientos.id_requerimiento', '=', 'respuestas_requerimientos.id_requerimiento')
+            ->join('contratos', 'contratos.id_contrato', '=', 'respuestas_requerimientos.id_contrato')
+            ->join('contratistas', 'contratistas.id_contratista', '=', 'contratos.id_contratista')
+            ->select(
+                'requerimientos.nombre as nombre_requerimiento', 
+                'requerimientos.fecha_creacion',
+                'requerimientos.fecha_finalizacion',
+                'contratistas.nombre as nombre_contratista',
+                'contratistas.primer_apellido',
+                'contratistas.segundo_apellido',
+                'contratistas.documento',
+                'respuestas_requerimientos.fecha_carga'
+                )
+            ->where('respuestas_requerimientos.id_requerimiento', '=', ''.$request->id_requerimiento.'')->get();
+        if (count($respuestas_requerimientos) > 0) {
+            return Excel::download(new RespuestasRequerimientosExport($respuestas_requerimientos), 'requerimiento_'.$respuestas_requerimientos[0]->nombre_requerimiento.'.xlsx');
+        }
+        return redirect('/revision/requerimientos/detalles/'.$request->id_requerimiento.'')->withErrors('No se encontraron respuestas en este requerimiento.');
     }
 
     public function update_state($id, $estado){
