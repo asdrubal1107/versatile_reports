@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActividadController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -7,7 +8,9 @@ use App\Http\Controllers\CentroController;
 use App\Http\Controllers\ContratistaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EntregaRequerimientoController;
+use App\Http\Controllers\EvidenciaController;
 use App\Http\Controllers\ObjetoController;
+use App\Http\Controllers\ObligacionController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\RequerimimientoController;
 use App\Http\Controllers\RevisionRequerimientoController;
@@ -121,9 +124,30 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/revision/requerimientos/detalles/listar/{id}', [RevisionRequerimientoController::class, 'list_details']);
         Route::get('/revision/requerimientos/archivo/cambiar/estado/{id}/{estado}', [RevisionRequerimientoController::class, 'update_state']);
         Route::get('/revision/requerimientos/descargar/archivo/{nombre}', [RevisionRequerimientoController::class, 'download_archive']);
+        //Modulo parametrizaciones -- obligaciones
+        Route::get('/parametrizaciones/obligaciones', [ObligacionController::class, 'view_list'])->name('listar_obligaciones');
+        Route::get('/parametrizaciones/obligaciones/listar', [ObligacionController::class, 'list']);
+        Route::get('/parametrizaciones/obligaciones/editar/{id}', [ObligacionController::class, 'view_edit']);
+        Route::post('/parametrizaciones/obligaciones/editar', [ObligacionController::class, 'update'])->name('editar_obligaciones');
+        Route::get('/parametrizaciones/obligaciones/crear', [ObligacionController::class, 'view_create'])->name('view_crear_obligaciones');
+        Route::post('/parametrizaciones/obligaciones/crear/guardar', [ObligacionController::class, 'save'])->name('crear_obligaciones');
+        //Modulo parametrizaciones -- actividades
+        Route::get('/parametrizaciones/actividades', [ActividadController::class, 'view_list'])->name('listar_actividades');
+        Route::get('/parametrizaciones/actividades/listar', [ActividadController::class, 'list']);
+        Route::get('/parametrizaciones/actividades/editar/{id}', [ActividadController::class, 'view_edit']);
+        Route::post('/parametrizaciones/actividades/editar', [ActividadController::class, 'update'])->name('editar_actividades');
+        Route::get('/parametrizaciones/actividades/crear', [ActividadController::class, 'view_create'])->name('view_crear_actividades');
+        Route::post('/parametrizaciones/actividades/crear/guardar', [ActividadController::class, 'save'])->name('crear_actividades');
+        //Modulo parametrizaciones -- evidencias
+        Route::get('/parametrizaciones/evidencias', [EvidenciaController::class, 'view_list'])->name('listar_evidencias');
+        Route::get('/parametrizaciones/evidencias/listar', [EvidenciaController::class, 'list']);
+        Route::get('/parametrizaciones/evidencias/editar/{id}', [EvidenciaController::class, 'view_edit']);
+        Route::post('/parametrizaciones/evidencias/editar', [EvidenciaController::class, 'update'])->name('editar_evidencias');
+        Route::get('/parametrizaciones/evidencias/crear', [EvidenciaController::class, 'view_create'])->name('view_crear_evidencias');
+        Route::post('/parametrizaciones/evidencias/crear/guardar', [EvidenciaController::class, 'save'])->name('crear_evidencias');
     });
     Route::middleware(['Supervisor'])->group(function(){
-              
+        
     });
     Route::middleware(['Contratista'])->group(function(){
         Route::get('/entrega/requerimiento', [EntregaRequerimientoController::class, 'view_list'])->name('listar_ent_requerimientos');
@@ -132,15 +156,3 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/entrega/requerimiento/guardar/archivo', [EntregaRequerimientoController::class, 'insert_archive'])->name('insertar_archivo');
     });
 });
-
-
-
-
-
-
-
-
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
