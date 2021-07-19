@@ -25,7 +25,6 @@ class CreateDepartamentosTable extends Migration
             ['nombre' => 'Antioquia'],
             ['nombre' => 'Arauca'],
             ['nombre' => 'Atlantico'],
-            ['nombre' => 'Bogotá DC'],
             ['nombre' => 'Bolívar'],
             ['nombre' => 'Boyacá'],
             ['nombre' => 'Caldas'],

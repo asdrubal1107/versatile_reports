@@ -153,6 +153,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/entrega/requerimiento', [EntregaRequerimientoController::class, 'view_list'])->name('listar_ent_requerimientos');
         Route::get('/entrega/requerimiento/listar', [EntregaRequerimientoController::class, 'list']);
         Route::get('/entrega/requerimiento/cargar/archivo/{id}', [EntregaRequerimientoController::class, 'view_insert_archive']);
+        Route::get('/entrega/requerimiento/informe/contractual/{id}', [EntregaRequerimientoController::class, 'view_insert_informe']);
         Route::post('/entrega/requerimiento/guardar/archivo', [EntregaRequerimientoController::class, 'insert_archive'])->name('insertar_archivo');
     });
 });

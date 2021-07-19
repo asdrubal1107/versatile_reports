@@ -70,7 +70,7 @@
                                     </div>
                                     <hr>
                                     <div class="fomr-actions text-center">
-                                        <a href="{{ route('listar_centros') }}" class="btn btn-warning mr-1">
+                                        <a href="{{ route('listar_ent_requerimientos') }}" class="btn btn-warning mr-1">
                                             <i class="la la-close"></i>
                                             Cancelar
                                         </a>

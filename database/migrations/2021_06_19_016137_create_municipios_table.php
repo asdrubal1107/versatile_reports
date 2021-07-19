@@ -185,7 +185,7 @@ class CreateMunicipiosTable extends Migration
             ['nombre' => 'Manatí', 'id_departamento' => 4],
             ['nombre' => 'Repelón', 'id_departamento' => 4],
             ['nombre' => 'Santa Lucía', 'id_departamento' => 4],
-            ['nombre' => 'Suán', 'id_departamento' => 4]
+            ['nombre' => 'Cartagena de Indias (capital de Bolívar)', 'id_departamento' => 4]
         ]);
     }
 
