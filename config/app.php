@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +168,7 @@ return [
 
         Yajra\DataTables\DataTablesServiceProvider::class, //Datatable
         Maatwebsite\Excel\ExcelServiceProvider::class, //Excel
+        Laraveles\Spanish\SpanishServiceProvider::class, //Laravel español
         /*
          * Application Service Providers...
          */
